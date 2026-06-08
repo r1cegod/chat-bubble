@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="Interactive preview of the adaptive chat bubble renderer."
+    >
+    <title>Adaptive Chat Bubble Preview</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/bubble.js" type="module"></script>
+  </head>
+
+  <body>
+    <main class="preview-viewport">
+      <section class="stage" aria-label="Chat bubble preview">
+        <article class="message-renderer" aria-live="polite">
+          <div class="bubble-avatar">
+            <div class="avatarbox">
+              <img
+                class="avatarbox-image"
+                src="/src/message%20renderer/hiii.png"
+                alt="Illustrated avatar"
+              >
+            </div>
+            <img
+              class="status-image"
+              src="/src/message%20renderer/heartyheart.png"
+              alt=""
+            >
+          </div>
+
+          <div class="bubble-content">
+            <div class="messagebox">
+              <span class="message" data-bubble-message></span>
+
+              <svg
+                class="cloud-corner"
+                viewBox="127.72 105.02 66.44 37.54"
+                aria-hidden="true"
+              >
+                <defs>
+                  <path
+                    id="cloud-shape"
+                    d="
+                      M128.436 122.64
+                      c2.651-17.241 23.788-23.283 35.508-8.651
+                      c11.439-3.6 16.911 7.307 16.39 9.058
+                      c7.501 1.683 13.106 8.384 13.106 16.393
+                      v2.4
+                      H128.436
+                      Z
+                    "
+                  />
+                  <clipPath id="cloud-clip">
+                    <use href="#cloud-shape"></use>
+                  </clipPath>
+                </defs>
+
+                <path
+                  class="cloud-highlight"
+                  clip-path="url(#cloud-clip)"
+                  d="M122 104 H200 V128.7 H122 Z"
+                ></path>
+                <path
+                  class="cloud-outline"
+                  d="
+                    M128.436 122.64
+                    c2.651-17.241 23.788-23.283 35.508-8.651
+                    c11.439-3.6 16.911 7.307 16.39 9.058
+                    c7.501 1.683 13.106 8.384 13.106 16.393
+                    v2.4
+                  "
+                ></path>
+              </svg>
+            </div>
+
+            <div class="nameplate">
+              <span class="nameplate-text" data-bubble-name></span>
+              <img
+                class="spark1"
+                src="/src/message%20renderer/sparkyspark.png"
+                alt=""
+              >
+              <img
+                class="spark2"
+                src="/src/message%20renderer/sparkyspark.png"
+                alt=""
+              >
+            </div>
+
+            <img
+              class="moon"
+              src="/src/message%20renderer/moon.png"
+              alt=""
+            >
+            <img
+              class="flower1"
+              src="/src/message%20renderer/flawa.png"
+              alt=""
+            >
+            <img
+              class="flower2"
+              src="/src/message%20renderer/flawe.png"
+              alt=""
+            >
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <form class="preview-controls" aria-label="Preview controls">
+      <label class="control-field control-field-name">
+        <span>Name</span>
+        <input
+          id="name-input"
+          name="name"
+          type="text"
+          maxlength="80"
+          autocomplete="off"
+        >
+      </label>
+
+      <label class="control-field control-field-message">
+        <span>Message</span>
+        <textarea
+          id="message-input"
+          name="message"
+          rows="1"
+          maxlength="600"
+        ></textarea>
+      </label>
+    </form>
+  </body>
+</html>

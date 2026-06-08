@@ -1,0 +1,86 @@
+[
+  {
+    "id": "empty",
+    "message": "",
+    "expectTruncation": false
+  },
+  {
+    "id": "one-character",
+    "message": "A",
+    "expectTruncation": false
+  },
+  {
+    "id": "short",
+    "message": "Hi!",
+    "expectTruncation": false
+  },
+  {
+    "id": "normal",
+    "message": "Wait, that actually worked.",
+    "expectTruncation": false
+  },
+  {
+    "id": "emoji-unicode",
+    "message": "🔥✨ Hello 👨‍👩‍👧‍👦 🌈💜 你好 مرحبا café",
+    "expectTruncation": false
+  },
+  {
+    "id": "emoji-modifiers",
+    "message": "Flags 🇻🇳 🇸🇬, skin tones 👋🏽 👍🏻, keycap 1️⃣, variation ❤️",
+    "expectTruncation": false
+  },
+  {
+    "id": "combining-marks",
+    "message": "é ä ñ Z͇͑͗",
+    "expectTruncation": false
+  },
+  {
+    "id": "dense-cjk",
+    "message": "超長訊息測試沒有空格也必須在訊息框內正確換行超長訊息測試沒有空格也必須在訊息框內正確換行超長訊息測試沒有空格也必須在訊息框內正確換行超長訊息測試沒有空格也必須在訊息框內正確換行超長訊息測試沒有空格也必須在訊息框內正確換行超長訊息測試沒有空格也必須在訊息框內正確換行超長訊息測試沒有空格也必須在訊息框內正確換行超長訊息測試沒有空格也必須在訊息框內正確換行",
+    "expectTruncation": true
+  },
+  {
+    "id": "explicit-newlines",
+    "message": "First line\nSecond line\nThird line",
+    "expectTruncation": false
+  },
+  {
+    "id": "whitespace-only",
+    "message": "          ",
+    "expectTruncation": false
+  },
+  {
+    "id": "special-characters",
+    "message": "<>& \"quotes\" 'apostrophe' /\\ | {} [] () @#$%^&*_+=~`",
+    "expectTruncation": false
+  },
+  {
+    "id": "long-url",
+    "message": "https://example.com/really/really/really/really/really/really/long/path?x=1&y=2",
+    "expectTruncation": false
+  },
+  {
+    "id": "right-edge-glyphs",
+    "message": "Right edge glyph test: fffff jjjj yyyy ))]] 🔥 Right edge glyph test: fffff jjjj yyyy ))]] 🔥 Right edge glyph test: fffff jjjj yyyy ))]] 🔥 ",
+    "expectTruncation": false
+  },
+  {
+    "id": "long-unbroken-word",
+    "message": "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "expectTruncation": true
+  },
+  {
+    "id": "very-long-message",
+    "message": "This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. This is a long wrapped message with punctuation, emoji ✨, and enough repeated content to force the message box through several lines. ",
+    "expectTruncation": true
+  },
+  {
+    "id": "long-to-short-transition",
+    "messages": [
+      "Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition Long transition ",
+      "Short"
+    ],
+    "repeat": 5,
+    "expectFinalMinimumSize": true
+  }
+]

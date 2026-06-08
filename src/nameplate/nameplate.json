@@ -1,0 +1,104 @@
+{
+	"name": "nameplate",
+	"nodes": [
+		{
+			"name": "l.png",
+			"type": "SPRITE",
+			"node_path": "l.png",
+			"resource_path": "sprites/l.png",
+			"pivot_offset": [
+				0,
+				0
+			],
+			"offset": [
+				-750,
+				500
+			],
+			"position": [
+				3,
+				720
+			],
+			"rotation": 0,
+			"scale": [
+				1,
+				1
+			],
+			"opacity": [
+				0,
+				0
+			],
+			"z": 2,
+			"tiles_x": 1,
+			"tiles_y": 1,
+			"frame_index": 0,
+			"children": [],
+			"path": "l.png"
+		},
+		{
+			"name": "r.png",
+			"type": "SPRITE",
+			"node_path": "r.png",
+			"resource_path": "sprites/r.png",
+			"pivot_offset": [
+				0,
+				0
+			],
+			"offset": [
+				-750,
+				500
+			],
+			"position": [
+				336,
+				720
+			],
+			"rotation": 0,
+			"scale": [
+				1,
+				1
+			],
+			"opacity": [
+				0,
+				0
+			],
+			"z": 1,
+			"tiles_x": 1,
+			"tiles_y": 1,
+			"frame_index": 0,
+			"children": [],
+			"path": "r.png"
+		},
+		{
+			"name": "mid.png",
+			"type": "SPRITE",
+			"node_path": "mid.png",
+			"resource_path": "sprites/mid.png",
+			"pivot_offset": [
+				0,
+				0
+			],
+			"offset": [
+				-750,
+				500
+			],
+			"position": [
+				28,
+				720
+			],
+			"rotation": 0,
+			"scale": [
+				1,
+				1
+			],
+			"opacity": [
+				0,
+				0
+			],
+			"z": 0,
+			"tiles_x": 1,
+			"tiles_y": 1,
+			"frame_index": 0,
+			"children": [],
+			"path": "mid.png"
+		}
+	]
+}

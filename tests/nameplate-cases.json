@@ -1,0 +1,50 @@
+[
+  {
+    "id": "empty",
+    "name": ""
+  },
+  {
+    "id": "one-character",
+    "name": "A"
+  },
+  {
+    "id": "short",
+    "name": "Duc"
+  },
+  {
+    "id": "normal",
+    "name": "ricy_rice"
+  },
+  {
+    "id": "near-limit",
+    "name": "VeryLongViewer"
+  },
+  {
+    "id": "overflow-latin",
+    "name": "VeryLongViewerNameThatMustOverflow"
+  },
+  {
+    "id": "emoji",
+    "name": "Duc😌🚀"
+  },
+  {
+    "id": "unicode",
+    "name": "你好مرحباcafé"
+  },
+  {
+    "id": "combining",
+    "name": "éäñẒ̇"
+  },
+  {
+    "id": "special",
+    "name": "<>&_[]{}@#"
+  },
+  {
+    "id": "spaces",
+    "name": "     "
+  },
+  {
+    "id": "unbroken",
+    "name": "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+  }
+]

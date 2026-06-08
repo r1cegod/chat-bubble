@@ -1,0 +1,30 @@
+{
+  "name": "chat-bubble",
+  "version": "1.0.0",
+  "description": "Active local workspace for the YouTube-targeted adaptive chat bubble.",
+  "private": true,
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "dev:nameplate": "vite src/nameplate --host 127.0.0.1 --port 5173 --open /nameplate.html",
+    "dev:avatarbox": "vite src/avatarbox --host 127.0.0.1 --port 5174 --open /avatarbox.html",
+    "dev:messagebox": "vite src/messagebox --host 127.0.0.1 --port 5175 --open /messagebox.html",
+    "dev:renderer": "vite \"src/message renderer\" --host 127.0.0.1 --port 5176 --open /message_renderer.html",
+    "render:page": "node tools/render-page.mjs",
+    "render:messagebox": "node tools/render-page.mjs src/messagebox/messagebox.html tests/screenshots/messagebox.png",
+    "test": "npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "playwright": "^1.60.0",
+    "vite": "^5.4.21"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "files.exclude": {
+    "desktop.ini": true
+  },
+  "liveServer.settings.root": "."
+}

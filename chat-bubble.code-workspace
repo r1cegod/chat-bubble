@@ -1,0 +1,18 @@
+{
+  "folders": [
+    {
+      "name": "chat bubble",
+      "path": "."
+    },
+    {
+      "name": "art wrapper",
+      "path": "C:/Users/r1ceg/OneDrive/Documents/art"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "desktop.ini": true
+    },
+    "liveServer.settings.root": "."
+  }
+}

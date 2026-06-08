@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+
+.avatarbox {
+  --avatar-size: 156px;
+  --line-width: 6px;
+  --purple: #672e98;
+
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+
+  border: var(--line-width) solid var(--purple);
+  border-radius: 50%;
+  overflow: hidden;
+
+  background: #ffffff;
+  position: relative;
+}
+
+.avatarbox-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.status-image {
+  position: absolute;
+
+  width: 55%;
+  height: auto;
+  display: block;
+
+  top: 85px;
+  right: -38px;
+
+  transform: rotate(10deg);
+  transform-origin: center
+}

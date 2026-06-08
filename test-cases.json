@@ -1,0 +1,30 @@
+[
+  {
+    "id": "short",
+    "name": "ricy_rice",
+    "role": "member",
+    "message": "h.",
+    "avatar": "assets/export/avatar.png"
+  },
+  {
+    "id": "normal",
+    "name": "ricy_rice",
+    "role": "member",
+    "message": "Hawoo hewoo haiii hiii helloo hawoo.",
+    "avatar": "assets/export/avatar.png"
+  },
+  {
+    "id": "long",
+    "name": "ricy_rice",
+    "role": "member",
+    "message": "Hawoo hewoo haiii hiii helloo hawoo. Hawoo hewoo haiii hiii helloo hawoo.",
+    "avatar": "assets/export/avatar.png"
+  },
+  {
+    "id": "long-word",
+    "name": "VeryLongViewerName",
+    "role": "artist",
+    "message": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "avatar": "assets/export/avatar.png"
+  }
+]

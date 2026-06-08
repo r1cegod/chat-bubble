@@ -1,0 +1,122 @@
+* {
+  box-sizing: border-box;
+}
+
+.messagebox {
+  --box-width: 556px;
+  --box-min-width: 556px;
+  --box-max-width: 1272px;
+  --box-height: 156px;
+  --box-min-height: 156px;
+  --box-max-height: 780px;
+  --line-width: 6px;
+  --box-corner-radius: 70px;
+  --box-padding-x: 90px;
+  --box-padding-y: 30px;
+  --highlight-height: 22px;
+  --message-max-lines: 8;
+  --outline-color: #652c97;
+  --inside-color: #ffffff;
+  --highlight-color: #e2bfff;
+
+  position: relative;
+  overflow: visible;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--highlight-color) 0 var(--highlight-height),
+      var(--inside-color) var(--highlight-height) 100%
+    );
+
+  min-width: var(--box-min-width);
+  max-width: var(--box-max-width);
+  min-height: var(--box-min-height);
+  max-height: var(--box-max-height);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: var(--line-width) solid var(--outline-color);
+  border-radius: var(--box-corner-radius);
+  padding: var(--box-padding-y) var(--box-padding-x);
+
+  z-index: 1;
+}
+
+.message {
+  position: relative;
+  z-index: 3;
+
+  display: -webkit-box;
+  width: 100%;
+  max-height: calc(var(--message-max-lines) * 1.4em);
+
+  color: var(--outline-color);
+  font-family: "Comic Sans MS", "Trebuchet MS", "Arial Rounded MT Bold", system-ui, sans-serif;
+  font-size: 60px;
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: left;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--message-max-lines);
+}
+
+.cloud-corner {
+  position: absolute;
+  z-index: 2;
+  top: -77px;
+  right: -6px;
+
+  width: 277.5px;
+  height: auto;
+
+  pointer-events: none;
+}
+
+.cloud-highlight {
+  fill: var(--highlight-color);
+}
+
+.cloud-outline {
+  fill: none;
+  stroke: var(--outline-color);
+  stroke-width: 1.44;
+  stroke-linecap: round;
+  stroke-linejoin: bevel;
+}
+
+.moon {
+  position: absolute;
+  width: 175px;
+  height: auto;
+  z-index: 0;
+
+  top: -130px;
+  right: -50px;
+}
+
+.flower1 {
+  position: absolute;
+  width: 90px;
+  height: auto;
+  z-index: 4;
+
+  bottom: -40px;
+  right: 30px;
+}
+
+.flower2 {
+  position: absolute;
+  width: 65px;
+  height: auto;
+  z-index: 4;
+
+  bottom: 5px;
+  right: -15px;
+}

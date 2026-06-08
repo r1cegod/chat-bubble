@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+}
+
+.nameplate {
+  --plate-height: 84px;
+  --plate-min-width: 252px;
+  --plate-max-width: 463px;
+  --text-padding-x: 25px;
+  --text-offset-y: -5px;
+  --side-offset: 45px;
+  --plate-tilt: -1.5deg;
+  --purple: #672e98;
+  --line-width: 6px;
+  --corner-radius: 25px;
+
+  position: absolute;
+  left: var(--side-offset);
+
+  width: calc(100% - 350px);
+  min-width: var(--plate-min-width);
+  max-width: var(--plate-max-width);
+  
+  height: var(--plate-height);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 var(--text-padding-x);
+  background: #fff;
+  border: var(--line-width) solid var(--purple);
+  border-radius: var(--corner-radius);
+  overflow: visible;
+  transform: rotate(var(--plate-tilt));
+  transform-origin: center;
+}
+
+.nameplate-text {
+  display: block;
+  width: 100%;
+
+  color: #672e98;
+  font-family: "Comic Sans MS", "Trebuchet MS", "Arial Rounded MT Bold", system-ui, sans-serif;
+  font-size: 45px;
+
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: center;
+  transform: translateY(var(--text-offset-y));
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.spark1 {
+  position: absolute;
+  width: 40px;
+  height: auto;
+  z-index: 4;
+
+  top: -20px;
+  right: -40px;
+}
+
+.spark2 {
+  position: absolute;
+  width: 70px;
+  height: auto;
+  z-index: 4;
+
+  top: -50px;
+  right: -95px;
+  transform: rotate(15deg);
+  transform-origin: center;
+}

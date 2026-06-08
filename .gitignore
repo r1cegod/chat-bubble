@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.vercel/
+.browser-libs/
+
+desktop.ini
+*~
+*.kra~
+*.kra-autosave.kra
+
+tests/screenshots/
+tests/*.log
+tests/*.pid
+
+Krita Work Time Report.bat
+krita-work-time-report.ps1
+krita-work-time-report.txt

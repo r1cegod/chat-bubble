@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 21">
+  <path
+    fill="none"
+    stroke="#672e98"
+    stroke-width="1.44"
+    stroke-linecap="square"
+    stroke-linejoin="bevel"
+    d="M32 19.44H6.72A6 6 0 0 1 .72 13.44V6.72A6 6 0 0 1 6.72 .72H32"
+  />
+</svg>

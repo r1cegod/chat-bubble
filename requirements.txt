@@ -1,0 +1,2 @@
+# Python project utility dependencies.
+# Currently empty: Vite handles live preview through Node/npm.
