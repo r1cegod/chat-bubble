@@ -7,6 +7,8 @@ Active local workspace for the YouTube-targeted adaptive chat bubble.
 The root Vite page is the public renderer preview. It includes two fixed
 controls for changing the display name and message:
 
+[Open the live Vercel preview](https://chat-bubble-sandy.vercel.app)
+
 ```powershell
 npm install
 npm run dev
