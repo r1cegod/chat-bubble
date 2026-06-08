@@ -224,7 +224,7 @@ textarea {
   font-weight: 800;
   line-height: 1.4;
   text-align: center;
-  text-overflow: ellipsis;
+  text-overflow: clip;
   white-space: nowrap;
   transform: translateY(var(--text-offset-y));
 }
