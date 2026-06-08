@@ -1,0 +1,20 @@
+.browser-libs/
+.git/
+.vercel/
+.vscode/
+dist/
+node_modules/
+tests/
+
+*.kra
+*.kra~
+*.code-workspace
+desktop.ini
+
+AGENTS.md
+CODEX_CONTEXT.md
+deep-research-report.md
+Krita Work Time Report.bat
+krita-work-time-report.ps1
+krita-work-time-report.txt
+requirements.txt
