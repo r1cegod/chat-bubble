@@ -1,0 +1,40 @@
+CHAT BUBBLE - QUICK START
+=========================
+
+FIRST TIME
+
+1. Extract the entire ChatBubble.zip file.
+2. Open the extracted ChatBubble folder.
+3. Double-click START CHAT.bat.
+4. Allow the Windows installation prompt if one appears.
+5. Paste your YouTube Data API v3 key.
+6. Paste the YouTube livestream link.
+
+The overlay opens automatically in your browser.
+
+OBS URL
+
+http://127.0.0.1:3000/chat_box
+
+The starter copies this URL to your clipboard automatically.
+Add it to OBS as a Browser Source.
+
+EVERY STREAM AFTER THAT
+
+1. Double-click START CHAT.bat.
+2. Paste the new livestream link.
+3. Keep the black Chat Bubble window open.
+
+UPDATE
+
+1. Close Chat Bubble.
+2. Double-click UPDATE CHAT.bat.
+3. Wait for "Update complete."
+
+Your saved API key is preserved.
+
+You do not need to open or edit the "ChatBubble Files" folder.
+
+STOP
+
+Press Ctrl+C in the Chat Bubble window, or close the window.

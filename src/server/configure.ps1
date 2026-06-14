@@ -15,7 +15,11 @@ if (Test-Path $EnvPath) {
 }
 
 if (-not $apiKey) {
-    $apiKey = (Read-Host "YouTube API key").Trim()
+    Write-Host ""
+    Write-Host "First-time setup:"
+    Write-Host "Paste your YouTube Data API v3 key."
+    Write-Host "It is saved only in this folder."
+    $apiKey = (Read-Host "API key").Trim()
 }
 
 if (-not $apiKey) {
@@ -23,9 +27,9 @@ if (-not $apiKey) {
     exit 1
 }
 
-$videoInput = (
-    Read-Host "YouTube video URL or video ID"
-).Trim()
+Write-Host ""
+Write-Host "Paste the YouTube livestream link."
+$videoInput = (Read-Host "Livestream link").Trim()
 
 $patterns = @(
     '(?:youtube\.com/watch\?.*?v=)([A-Za-z0-9_-]+)',
@@ -43,7 +47,7 @@ foreach ($pattern in $patterns) {
 }
 
 if ($videoId -notmatch '^[A-Za-z0-9_-]{6,}$') {
-    Write-Error "Enter a valid YouTube URL or video ID."
+    Write-Error "That does not look like a YouTube livestream link."
     exit 1
 }
 
@@ -52,4 +56,4 @@ if ($videoId -notmatch '^[A-Za-z0-9_-]{6,}$') {
     "YOUTUBE_VIDEO_ID=$videoId"
 ) | Set-Content -Encoding ASCII $EnvPath
 
-Write-Host "Configured video ID: $videoId"
+Write-Host "Livestream selected."

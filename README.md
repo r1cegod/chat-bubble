@@ -16,19 +16,21 @@ powershell -ExecutionPolicy Bypass -File src/server/make-release.ps1
 
 Send `src/server/release/ChatBubble.zip`. The recipient extracts that archive
 and works entirely inside its `ChatBubble` folder. Git and this repository are
-not required on the recipient's machine.
+not required on the recipient's machine. The release root exposes only
+`START CHAT.bat`, `UPDATE CHAT.bat`, `QUICK START.txt`, and one internal files
+folder.
 
 First setup:
 
-1. Double-click `start.bat`.
-2. `install-dependencies.bat` installs system Node.js LTS through `winget`
-   when needed, then installs the folder's runtime dependencies.
-3. Enter the YouTube API key on the first run.
-4. Enter a YouTube video URL or video ID before each start.
-5. Use the displayed `http://127.0.0.1:3000/chat_box` URL.
+1. Extract the ZIP.
+2. Double-click `START CHAT.bat`.
+3. Paste the API key once.
+4. Paste the livestream link.
 
-For OBS, use that URL as a Browser Source. Update the checkout with
-`update.bat`; the local `.env` file remains unchanged.
+The launcher installs missing dependencies, copies the OBS URL to the
+clipboard, and opens the overlay automatically. `QUICK START.txt` contains the
+complete recipient instructions. Update with `UPDATE CHAT.bat`; the local
+`.env` file remains unchanged.
 
 Active local workspace for the YouTube-targeted adaptive chat bubble.
 
