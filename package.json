@@ -8,6 +8,8 @@
     "test": "tests"
   },
   "scripts": {
+    "start": "node --env-file=src/server/.env src/server/index.js",
+    "check": "node --check src/server/index.js && node --check src/server/adapter.js && node --check src/server/sse_hub.js",
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
@@ -23,8 +25,16 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=20.6"
+  },
   "devDependencies": {
     "playwright": "^1.60.0",
     "vite": "^5.4.21"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.4",
+    "@grpc/proto-loader": "^0.8.1",
+    "google-proto-files": "^5.0.2"
   }
 }

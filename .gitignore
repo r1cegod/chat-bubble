@@ -16,3 +16,6 @@ tests/*.pid
 Krita Work Time Report.bat
 krita-work-time-report.ps1
 krita-work-time-report.txt
+.env
+.env.*
+!.env.example

@@ -8,9 +8,11 @@ function connect(response) {
     });
 
     clients.add(response);
+    console.log("client added")
 
     response.on("close", () => {
         clients.delete(response);
+        console.log("client disconnected")
     });
 }
 

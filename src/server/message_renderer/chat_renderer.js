@@ -2,7 +2,7 @@ import { renderMessage } from "./message_renderer.js";
 
 export function addMessage(messagePackage) {
   const chatStack = document.querySelector(".chat-stack");
-  const maxiumVisible = 15;
+  const maximumVisible = 15;
   const bubble = renderMessage(messagePackage);
 
   chatStack.append(bubble);

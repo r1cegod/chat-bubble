@@ -18,7 +18,7 @@ body {
   height: 1000px;
   display: grid;
   place-items: center;
-  background-color: #eed4f3;
+  /*background-color: #eed4f3;
   /*background-image:
     linear-gradient(45deg, #dddddd 25%, transparent 25%),
     linear-gradient(-45deg, #dddddd 25%, transparent 25%),
@@ -37,7 +37,7 @@ body {
   position: relative;
   width: 1600px;
   height: 3000px;
-  overflow: hidden;
+  overflow: visible;
   transform: scale(var(--chat-preview-scale, 1));
   transform-origin: top left;
 }
@@ -48,7 +48,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-color: #f0d4f3;
+  padding-bottom: 80px;
+  /*background-color: #f0d4f3;*/
   gap: 150px;
 }
 

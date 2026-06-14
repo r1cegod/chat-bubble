@@ -1,5 +1,23 @@
 # Adaptive Chat Bubble
 
+## Local YouTube Overlay
+
+Requirements:
+
+- Node.js 20.6 or newer
+- Git, when using `update.bat`
+
+First setup:
+
+1. Run `npm ci --omit=dev`.
+2. Copy `src/server/.env.example` to `src/server/.env`.
+3. Fill in `YOUTUBE_API_KEY` and `YOUTUBE_VIDEO_ID`.
+4. Run `start.bat` or `npm start`.
+5. Open `http://127.0.0.1:3000/chat_box`.
+
+For OBS, use that URL as a Browser Source. Update the checkout with
+`update.bat`; the ignored `src/server/.env` file remains local.
+
 Active local workspace for the YouTube-targeted adaptive chat bubble.
 
 ## Public Preview
