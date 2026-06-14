@@ -1,4 +1,3 @@
-//loading hell
 const path = require("node:path");
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
@@ -32,13 +31,6 @@ const YouTubeLiveChatService =
   descriptor.youtube.api.v3
     .V3DataLiveChatMessageService;
 
-console.log("proto type:", typeof YouTubeLiveChatService);
-
-
-///////////////////////////////////////////////////////////////////
-
-
-//general fetch
 async function fetchJson(url) {
   const response = await fetch(url);
 
@@ -52,7 +44,6 @@ async function fetchJson(url) {
   return response.json();
 }
 
-//get livechatid
 function buildVideoUrl(apiKey, videoId) {
   const url = new URL(
     "https://www.googleapis.com/youtube/v3/videos"
@@ -89,14 +80,11 @@ async function getLiveChatId(apiKey, videoId) {
   return liveChatId;
 }
 
-//create client
 const youtubeClient = new YouTubeLiveChatService(
   "dns:///youtube.googleapis.com:443",
   grpc.credentials.createSsl()
 );
-console.log("type of streamList:", typeof youtubeClient.streamList);
 
-//ID helper
 function rememberMessageId(
   seenMessageIds,
   messageId
@@ -113,7 +101,6 @@ function rememberMessageId(
 }
 
 
-//normalizer
 function normalizeMessage(item) {
   const snippet = item.snippet;
   const author = item.author_details;
@@ -153,7 +140,6 @@ function normalizeMessage(item) {
 }
 
 
-//Open connection
 function startChatStream(apiKey, liveChatId, onMessage) {
   const seenMessageIds = new Set();
 
@@ -249,11 +235,6 @@ function startChatStream(apiKey, liveChatId, onMessage) {
     }
   };
 }
-
-
-////////////////////////////////////////////////////////////////////////////
-
-
 module.exports = {
   getLiveChatId,
   startChatStream

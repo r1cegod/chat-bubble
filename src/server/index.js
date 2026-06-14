@@ -8,7 +8,6 @@ const {
 } = require("./adapter");
 
 
-//prepare config
 function requireEnvironment(name) {
   const value = process.env[name]?.trim();
 
@@ -18,7 +17,6 @@ function requireEnvironment(name) {
     );
   }
 
-  console.log(`${name} loaded`)
   return value;
 }
 const config = {
@@ -31,7 +29,6 @@ const config = {
   )
 };
 
-//// Adapter setup
 async function startAdapter() {
     const liveChatId = await getLiveChatId(
         config.youtubeApiKey,
@@ -62,9 +59,7 @@ function isSafeFileName(fileName) {
   );
 }
 
-//get filess
 function serverFile(request, response) {
-    //get the file name and safety check
     const url = new URL(
         request.url,
         `http://${request.headers.host}`
@@ -79,14 +74,12 @@ function serverFile(request, response) {
         return;
     }
 
-    //build file path
     const filePath = path.join(
         __dirname,
         "message_renderer",
         fileName
     );
 
-    //check extension and prepare content type for response
     const contentTypes = {
         ".html": "text/html; charset=utf-8",
         ".css": "text/css; charset=utf-8",
@@ -99,7 +92,6 @@ function serverFile(request, response) {
     const extension = path.extname(filePath).toLocaleLowerCase();
     const contentType = contentTypes[extension] ?? "application/octet-stream";
 
-    //cache things
     const noCacheExtensions = new Set([
         ".html",
         ".css",
@@ -109,7 +101,6 @@ function serverFile(request, response) {
     ? "no-cache"
     : "public, max-age=18000";
 
-    //now read
     fs.readFile(filePath, (error, contents) => {
         if (!error) {
             response.writeHead(200, {
@@ -153,7 +144,7 @@ function serverPage(response) {
                 "Content-Type": "text/plain"
             });
             response.end("Could not read page");
-            console.log("can't read page")
+            console.error("Could not read chat page");
             return;
         }
 
@@ -161,12 +152,9 @@ function serverPage(response) {
             "Content-Type": "text/html"
         });
         response.end(fileContents);
-        console.log("page connected")
     });
 }
 
-
-//da server
 const server = http.createServer((request, response) => {
     if (request.url === "/health") {
         response.writeHead(200, {

@@ -66,6 +66,23 @@ Your saved API key is preserved.
 
 You do not need to open or edit the "ChatBubble Files" folder.
 
+WHAT THE APP DOES
+
+- The API key is saved locally in "ChatBubble Files\.env".
+- The API key is sent only to Google's YouTube API.
+- Chat Bubble connects to YouTube/Google for live chat.
+- Updates are downloaded from the public GitHub release page.
+- First-time setup may install the official Node.js LTS package through winget.
+- The overlay runs only on this computer at 127.0.0.1.
+- Chat Bubble has no analytics, account system, or remote database.
+
+For safer key handling, restrict the key to "YouTube Data API v3" in Google
+Cloud Console. Do not send the key to anyone or show the .env file on stream.
+
+Windows may show a permission prompt while Node.js is installed. The BAT files
+run the included PowerShell setup scripts with a process-only execution-policy
+override. They do not change the computer's permanent PowerShell policy.
+
 STOP
 
 Press Ctrl+C in the Chat Bubble window, or close the window.

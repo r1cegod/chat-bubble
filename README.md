@@ -4,6 +4,10 @@
 
 **Download:** [ChatBubble.zip](https://github.com/r1cegod/chat-bubble/releases/latest/download/ChatBubble.zip)
 
+Published releases include `ChatBubble.zip.sha256`. The updater downloads both
+assets from the latest versioned GitHub release and verifies the ZIP before
+replacing application files.
+
 Requirements:
 
 - Windows 10 or newer
@@ -34,6 +38,13 @@ The launcher installs missing dependencies, copies the OBS URL to the
 clipboard, and opens the overlay automatically. `QUICK START.txt` contains the
 complete recipient instructions. Update with `UPDATE CHAT.bat`; the local
 `.env` file remains unchanged.
+
+The local API key is used only with Google's YouTube API. The application has
+no analytics, hosted backend, user account, or remote database. Runtime network
+access is limited to Google/YouTube, GitHub releases, the official Node.js
+package installed through winget, and the local `127.0.0.1` overlay.
+The BAT launchers use a process-only PowerShell execution-policy override for
+their included setup scripts; they do not modify the system's permanent policy.
 
 Active local workspace for the YouTube-targeted adaptive chat bubble.
 
