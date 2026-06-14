@@ -2,6 +2,8 @@
 
 ## Local YouTube Overlay
 
+**Download:** [ChatBubble.zip](https://github.com/r1cegod/chat-bubble/releases/latest/download/ChatBubble.zip)
+
 Requirements:
 
 - Windows 10 or newer
