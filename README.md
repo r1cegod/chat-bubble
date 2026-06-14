@@ -27,7 +27,8 @@ First setup:
 1. Extract the ZIP.
 2. Double-click `START CHAT.bat`.
 3. Paste the API key once.
-4. Paste the livestream link.
+4. Open the livestream on YouTube, click **Share**, click **Copy**, and paste
+   the complete link.
 
 The launcher installs missing dependencies, copies the OBS URL to the
 clipboard, and opens the overlay automatically. `QUICK START.txt` contains the

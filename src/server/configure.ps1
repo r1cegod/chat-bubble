@@ -28,7 +28,13 @@ if (-not $apiKey) {
 }
 
 Write-Host ""
-Write-Host "Paste the YouTube livestream link."
+Write-Host "Get the livestream link:"
+Write-Host "  1. Open the livestream on YouTube."
+Write-Host "  2. Click Share."
+Write-Host "  3. Click Copy."
+Write-Host "  4. Paste the full link below."
+Write-Host ""
+Write-Host "Example: https://youtu.be/AbCdEf12345"
 $videoInput = (Read-Host "Livestream link").Trim()
 
 $patterns = @(
@@ -47,7 +53,11 @@ foreach ($pattern in $patterns) {
 }
 
 if ($videoId -notmatch '^[A-Za-z0-9_-]{6,}$') {
-    Write-Error "That does not look like a YouTube livestream link."
+    Write-Host ""
+    Write-Error (
+        "That is not a video link. Open the livestream's normal YouTube " +
+        "page, then click Share > Copy."
+    )
     exit 1
 }
 

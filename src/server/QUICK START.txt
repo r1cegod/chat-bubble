@@ -8,9 +8,40 @@ FIRST TIME
 3. Double-click START CHAT.bat.
 4. Allow the Windows installation prompt if one appears.
 5. Paste your YouTube Data API v3 key.
-6. Paste the YouTube livestream link.
+6. Paste the YouTube livestream link. See the easy guide below.
 
 The overlay opens automatically in your browser.
+
+HOW TO GET THE LIVESTREAM LINK
+
+EASIEST METHOD
+
+1. Open the livestream's normal YouTube page.
+2. Click Share under the video.
+3. Click Copy.
+4. Return to the black Chat Bubble window.
+5. Right-click to paste, then press Enter.
+
+Paste the whole link. You do not need to find or edit the video ID.
+
+WORKING EXAMPLES
+
+https://www.youtube.com/watch?v=AbCdEf12345
+https://www.youtube.com/live/AbCdEf12345
+https://youtu.be/AbCdEf12345
+
+In all three examples, the video ID is:
+
+AbCdEf12345
+
+FALLBACK METHOD
+
+If Share is unavailable, copy the full address from the browser's address bar.
+Make sure it is the actual video page, not:
+
+- YouTube Studio
+- Your channel page
+- The YouTube home page
 
 OBS URL
 
@@ -22,7 +53,7 @@ Add it to OBS as a Browser Source.
 EVERY STREAM AFTER THAT
 
 1. Double-click START CHAT.bat.
-2. Paste the new livestream link.
+2. Open the livestream, click Share, click Copy, and paste the link.
 3. Keep the black Chat Bubble window open.
 
 UPDATE
