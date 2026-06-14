@@ -4,9 +4,8 @@
 
 **Download:** [ChatBubble.zip](https://github.com/r1cegod/chat-bubble/releases/latest/download/ChatBubble.zip)
 
-Published releases include `ChatBubble.zip.sha256`. The updater downloads both
-assets from the latest versioned GitHub release and verifies the ZIP before
-replacing application files.
+Published releases include `ChatBubble.zip.sha256` for manual integrity
+verification.
 
 Requirements:
 
@@ -36,8 +35,9 @@ First setup:
 
 The launcher installs missing dependencies, copies the OBS URL to the
 clipboard, and opens the overlay automatically. `QUICK START.txt` contains the
-complete recipient instructions. Update with `UPDATE CHAT.bat`; the local
-`.env` file remains unchanged.
+complete recipient instructions. `UPDATE CHAT.bat` only opens the official
+GitHub release page and displays manual replacement instructions. It does not
+download, execute, extract, or overwrite files.
 
 The local API key is used only with Google's YouTube API. The application has
 no analytics, hosted backend, user account, or remote database. Runtime network

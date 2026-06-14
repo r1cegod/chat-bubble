@@ -60,18 +60,24 @@ UPDATE
 
 1. Close Chat Bubble.
 2. Double-click UPDATE CHAT.bat.
-3. Wait for "Update complete."
+3. Download ChatBubble.zip from the official GitHub release page.
+4. Extract it as a new folder.
+5. Copy ".env" from the old "ChatBubble Files" folder into the new
+   "ChatBubble Files" folder.
+6. Start the new copy. Delete the old folder after it works.
 
-Your saved API key is preserved.
+UPDATE CHAT.bat only opens the official release page and displays these steps.
+It does not download, execute, extract, or replace any files.
 
-You do not need to open or edit the "ChatBubble Files" folder.
+Apart from copying ".env" during an update, you do not need to open or edit the
+"ChatBubble Files" folder.
 
 WHAT THE APP DOES
 
 - The API key is saved locally in "ChatBubble Files\.env".
 - The API key is sent only to Google's YouTube API.
 - Chat Bubble connects to YouTube/Google for live chat.
-- Updates are downloaded from the public GitHub release page.
+- UPDATE CHAT.bat only opens the public GitHub release page.
 - First-time setup may install the official Node.js LTS package through winget.
 - The overlay runs only on this computer at 127.0.0.1.
 - Chat Bubble has no analytics, account system, or remote database.
