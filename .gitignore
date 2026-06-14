@@ -19,3 +19,4 @@ krita-work-time-report.txt
 .env
 .env.*
 !.env.example
+release/

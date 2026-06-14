@@ -4,26 +4,31 @@
 
 Requirements:
 
-- Node.js 20.6 or newer
-- Git, when using `update.bat`
+- Windows 10 or newer
+- Windows Package Manager (`winget`, included with current Windows App Installer)
+- Internet access on first start and when updating
 
-On another device:
+Create the distributable folder:
 
 ```text
-git clone https://github.com/r1cegod/chat-bubble.git
+powershell -ExecutionPolicy Bypass -File src/server/make-release.ps1
 ```
 
-Open the cloned `chat-bubble` folder. Everything below runs from that folder.
+Send `src/server/release/ChatBubble.zip`. The recipient extracts that archive
+and works entirely inside its `ChatBubble` folder. Git and this repository are
+not required on the recipient's machine.
 
 First setup:
 
 1. Double-click `start.bat`.
-2. Enter the YouTube API key on the first run.
-3. Enter a YouTube video URL or video ID before each start.
-4. Use the displayed `http://127.0.0.1:3000/chat_box` URL.
+2. `install-dependencies.bat` installs system Node.js LTS through `winget`
+   when needed, then installs the folder's runtime dependencies.
+3. Enter the YouTube API key on the first run.
+4. Enter a YouTube video URL or video ID before each start.
+5. Use the displayed `http://127.0.0.1:3000/chat_box` URL.
 
 For OBS, use that URL as a Browser Source. Update the checkout with
-`update.bat`; the ignored `src/server/.env` file remains local.
+`update.bat`; the local `.env` file remains unchanged.
 
 Active local workspace for the YouTube-targeted adaptive chat bubble.
 

@@ -1,6 +1,6 @@
 param(
     [string]$EnvPath = (
-        Join-Path $PSScriptRoot "src\server\.env"
+        Join-Path $PSScriptRoot ".env"
     )
 )
 
@@ -46,10 +46,6 @@ if ($videoId -notmatch '^[A-Za-z0-9_-]{6,}$') {
     Write-Error "Enter a valid YouTube URL or video ID."
     exit 1
 }
-
-$envDirectory = Split-Path -Parent $EnvPath
-New-Item -ItemType Directory -Force $envDirectory |
-    Out-Null
 
 @(
     "YOUTUBE_API_KEY=$apiKey"
