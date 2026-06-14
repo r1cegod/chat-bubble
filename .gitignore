@@ -4,6 +4,7 @@ dist/
 .browser-libs/
 
 desktop.ini
+recovery-codes.txt
 *~
 *.kra~
 *.kra-autosave.kra

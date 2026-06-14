@@ -1,0 +1,16 @@
+.book-card {
+  max-width: 320px;
+  padding: 16px;
+  border: 2px solid black;
+  border-radius: 12px;
+  background: white;
+}
+
+.book-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.book-author {
+  color: gray;
+}

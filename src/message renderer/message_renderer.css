@@ -4,10 +4,12 @@
 
 body {
   margin: 0;
+  min-width: 100vw;
   min-height: 100vh;
   display: grid;
   place-items: center;
   background: #ffffff;
+  overflow: hidden;
 }
 
 .stage {
@@ -16,7 +18,7 @@ body {
   height: 1000px;
   display: grid;
   place-items: center;
-  background-color: #afbef7;
+  background-color: #eed4f3;
   /*background-image:
     linear-gradient(45deg, #dddddd 25%, transparent 25%),
     linear-gradient(-45deg, #dddddd 25%, transparent 25%),
@@ -26,37 +28,74 @@ body {
   background-size: 64px 64px;
 }
 
-.message-renderer {
+.chat-preview {
+  width: var(--chat-preview-width, 1600px);
+  height: var(--chat-preview-height, 3000px);
+}
+
+.chat-viewport {
+  position: relative;
+  width: 1600px;
+  height: 3000px;
+  overflow: hidden;
+  transform: scale(var(--chat-preview-scale, 1));
+  transform-origin: top left;
+}
+
+.chat-stack {
+  height: 100%;
+  width: 100%;;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: #f0d4f3;
+  gap: 150px;
+}
+
+
+.message-bubble {
   --avatar-message-gap: 45px;
 
   position: relative;
   display: flex;
-  align-items: center;
   gap: var(--avatar-message-gap);
 
   width: fit-content;
+  height: fit-content;
   max-width: 100%;
-  overflow: visible;
 }
 
 .bubble-content {
+  --spark1-width: 40px;
+  --spark2-width: 70px;
+  --spark1-top: -20px;
+  --spark2-top: -50px;
+  --highlight-color: #e2bfff;
+  --botright1-width: 90px;
+  --botright1-bot: -40px;
+  --botright1-right: 30px;
+  --botright1-rotate: 0deg;
+  --botright2-width: 65px;
+  --botright2-bot: 5px;
+  --botright2-right: -15px;
+  --botright2-rotate: 0deg;
+  --botright2-z: 4;
+
   position: relative;
   flex: 0 1 auto;
   min-width: 0;
 }
 
-.message-renderer .avatarbox {
-  flex: 0 0 auto;
-}
-
-.message-renderer .messagebox {
-  width: fit-content;
-}
-
-.message-renderer .nameplate {
-  z-index: 4;
-  top: -70px;
-  transform-origin: center;
+.message-bubble[data-role="fox"] .bubble-content {
+  --spark1-width: 30px;
+  --spark1-top: -15px;
+  --spark2-width: 50px;
+  --spark2-top: -40px;
+  --highlight-color: #f0bee5;
+  --botright1-width: 202px;
+  --botright1-bot: -30px;
+  --botright1-right: -70px;
+  --botright1-rotate: -6.5deg;
 }
 
 .bubble-avatar {

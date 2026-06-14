@@ -4,7 +4,7 @@
 
 .messagebox {
   --box-width: 556px;
-  --box-min-width: 556px;
+  --box-min-width: 800px;
   --box-max-width: 1272px;
   --box-height: 156px;
   --box-min-height: 156px;
@@ -14,10 +14,9 @@
   --box-padding-x: 90px;
   --box-padding-y: 30px;
   --highlight-height: 22px;
-  --message-max-lines: 8;
+  --message-max-lines: 3;
   --outline-color: #652c97;
   --inside-color: #ffffff;
-  --highlight-color: #e2bfff;
 
   position: relative;
   overflow: visible;
@@ -28,6 +27,7 @@
       var(--inside-color) var(--highlight-height) 100%
     );
 
+  width: fit-content;
   min-width: var(--box-min-width);
   max-width: var(--box-max-width);
   min-height: var(--box-min-height);
@@ -71,9 +71,9 @@
   position: absolute;
   z-index: 2;
   top: -77px;
-  right: -6px;
+  right: -5.7px;
 
-  width: 277.5px;
+  width: 277px;
   height: auto;
 
   pointer-events: none;
@@ -91,7 +91,7 @@
   stroke-linejoin: bevel;
 }
 
-.moon {
+.topright {
   position: absolute;
   width: 175px;
   height: auto;
@@ -101,22 +101,26 @@
   right: -50px;
 }
 
-.flower1 {
+.botright1 {
   position: absolute;
-  width: 90px;
+  width: var(--botright1-width);
   height: auto;
   z-index: 4;
 
-  bottom: -40px;
-  right: 30px;
+  bottom: var(--botright1-bot);
+  right: var(--botright1-right);
+  transform-origin: center;
+  transform: rotate(var(--botright1-rotate));
 }
 
-.flower2 {
+.botright2 {
   position: absolute;
-  width: 65px;
+  width: var(--botright2-width);
   height: auto;
-  z-index: 4;
+  z-index: var(--botright2-z);
 
-  bottom: 5px;
-  right: -15px;
+  bottom: var(--botright2-bot);
+  right: var(--botright2-right);
+  transform-origin: center;
+  transform: rotate(var(--botright2-rotate));
 }
