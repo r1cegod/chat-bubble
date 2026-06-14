@@ -7,13 +7,20 @@ Requirements:
 - Node.js 20.6 or newer
 - Git, when using `update.bat`
 
+On another device:
+
+```text
+git clone https://github.com/r1cegod/chat-bubble.git
+```
+
+Open the cloned `chat-bubble` folder. Everything below runs from that folder.
+
 First setup:
 
-1. Run `npm ci --omit=dev`.
-2. Copy `src/server/.env.example` to `src/server/.env`.
-3. Fill in `YOUTUBE_API_KEY` and `YOUTUBE_VIDEO_ID`.
-4. Run `start.bat` or `npm start`.
-5. Open `http://127.0.0.1:3000/chat_box`.
+1. Double-click `start.bat`.
+2. Enter the YouTube API key on the first run.
+3. Enter a YouTube video URL or video ID before each start.
+4. Use the displayed `http://127.0.0.1:3000/chat_box` URL.
 
 For OBS, use that URL as a Browser Source. Update the checkout with
 `update.bat`; the ignored `src/server/.env` file remains local.
