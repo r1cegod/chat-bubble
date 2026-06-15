@@ -173,10 +173,6 @@ const entry = [
   ""
 ].join("\n");
 const latestNotes = [
-  `# Chat Bubble v${version}`,
-  "",
-  `Released: ${timestamp}`,
-  "",
   "## Guide",
   "",
   guide,

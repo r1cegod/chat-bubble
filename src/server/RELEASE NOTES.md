@@ -1,7 +1,3 @@
-# Chat Bubble v1.1.3
-
-Released: 2026-06-15, 14:59:10 GMT+7
-
 ## Guide
 
 Download and extract ChatBubble.zip, then follow RELEASE NOTES.md and QUICK START.txt.
