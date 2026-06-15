@@ -35,6 +35,8 @@ Publish a new release:
 2. Double-click `RELEASE CHAT.bat`.
 3. Press Enter for the default patch bump, or enter `minor`, `major`, or an
    exact version such as `1.1.0`.
+4. Enter one short guide/developer note describing what changed and how to use
+   it.
 
 The release button automatically includes every tracked, modified, deleted, or
 new non-ignored file under `src/server/`. It does not ask you to select files,
@@ -45,6 +47,13 @@ and waits for the pre-publication safety workflow.
 
 The button configures Windows Git to use the authenticated GitHub CLI account
 over HTTPS before pushing, so it does not depend on a separate SSH key.
+
+Before committing, the button writes `src/server/RELEASE NOTES.md`, appends
+`src/server/DEV NOTES.md`, and totals the duration of every file containing
+`CBlog` under `D:\OBS Recordings`. It also includes the newest non-CBlog
+recording as the active CapCut source when that file cannot be renamed. It
+records both all-time work and work from files modified today. The guide
+appears on the GitHub Release and inside the downloaded package.
 
 Run a non-destructive readiness check from Command Prompt with:
 

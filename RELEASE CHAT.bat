@@ -98,6 +98,11 @@ if errorlevel 1 goto :failed
 
 if /i "%~1"=="check" (
   echo.
+  echo Checking CBlog recording totals...
+  node.exe tools/create-release-note.mjs "0.0.0" --check
+  if errorlevel 1 goto :failed
+
+  echo.
   echo ========================================
   echo          RELEASE CHECK PASSED
   echo ========================================
@@ -113,6 +118,14 @@ set /p "BUMP=Version bump [patch/minor/major/x.y.z] (default patch): "
 if "%BUMP%"=="" set "BUMP=patch"
 
 echo.
+set "RELEASE_GUIDE="
+set /p "RELEASE_GUIDE=Short guide / developer note for this release: "
+if not defined RELEASE_GUIDE (
+  echo A short release guide is required.
+  goto :failed
+)
+
+echo.
 echo [3/5] Bumping version...
 call npm.cmd --prefix src/server version "%BUMP%" --no-git-tag-version
 if errorlevel 1 goto :failed
@@ -121,6 +134,11 @@ for /f "delims=" %%V in (
   'node.exe -p "require('./src/server/package.json').version"'
 ) do set "VERSION=%%V"
 set "TAG=v%VERSION%"
+
+echo.
+echo Creating release guide, developer note, and work-time totals...
+node.exe tools/create-release-note.mjs "%VERSION%"
+if errorlevel 1 goto :failed
 
 git.exe rev-parse "%TAG%" >nul 2>nul
 if not errorlevel 1 (

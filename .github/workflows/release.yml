@@ -108,6 +108,16 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
+      - name: Compose release notes
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        run: |
+          @(
+            Get-Content "src/server/RELEASE NOTES.md" -Raw
+            ""
+            Get-Content "src/server/release/release-safety.md" -Raw
+          ) | Set-Content "src/server/release/github-release-notes.md"
+
       - name: Create draft GitHub release
         if: startsWith(github.ref, 'refs/tags/')
         shell: pwsh
@@ -118,7 +128,7 @@ jobs:
             --verify-tag `
             --draft `
             --title "Chat Bubble $env:GITHUB_REF_NAME" `
-            --notes-file src/server/release/release-safety.md `
+            --notes-file src/server/release/github-release-notes.md `
             src/server/release/ChatBubble.zip `
             src/server/release/ChatBubble.zip.sha256 `
             src/server/release/release-safety.json
