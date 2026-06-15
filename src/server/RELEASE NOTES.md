@@ -8,10 +8,8 @@ Download and extract ChatBubble.zip, then follow RELEASE NOTES.md and QUICK STAR
 
 ## Developer Note
 
-- Today: 2h 20m 3s (1 recordings)
-- All time: 41h 26m 35s (14 recordings)
-- Named CBlog recordings: 14
-- Active CapCut recording: none found
+- Today: **2h 20m 3s** (1 recording)
+- All time: **41h 26m 35s** (14 recordings)
 
 Work time is the summed media duration of files containing `CBlog` in
 `D:\OBS Recordings` plus the newest non-CBlog recording currently used

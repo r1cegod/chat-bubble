@@ -113,6 +113,10 @@ function formatDuration(totalSeconds) {
   return `${hours}h ${minutes}m ${seconds}s`;
 }
 
+function formatRecordingCount(count) {
+  return `${count} ${count === 1 ? "recording" : "recordings"}`;
+}
+
 const now = new Date();
 const todayKey = localDateKey(now);
 const cblogFiles = await collectFiles(recordingsRoot);
@@ -150,20 +154,24 @@ const timestamp = now.toLocaleString("en-CA", {
   timeZoneName: "short"
 });
 const workTime = [
-  `- Today: ${formatDuration(todaySeconds)} (${todayFileCount} recordings)`,
-  `- All time: ${formatDuration(allTimeSeconds)} (${files.length} recordings)`,
-  `- Named CBlog recordings: ${cblogFiles.length}`,
-  activeCapCutRecording
-    ? `- Active CapCut recording: \`${basename(activeCapCutRecording)}\``
-    : "- Active CapCut recording: none found"
-].join("\n");
+  `- Today: **${formatDuration(todaySeconds)}** (${formatRecordingCount(todayFileCount)})`,
+  `- All time: **${formatDuration(allTimeSeconds)}** (${formatRecordingCount(files.length)})`
+];
+
+if (activeCapCutRecording) {
+  workTime.push(
+    `- Active CapCut source: \`${basename(activeCapCutRecording)}\``
+  );
+}
+
+const workTimeMarkdown = workTime.join("\n");
 
 if (checkMode) {
   console.log(
-    `Today: ${formatDuration(todaySeconds)} (${todayFileCount} recordings)`
+    `Today: ${formatDuration(todaySeconds)} (${formatRecordingCount(todayFileCount)})`
   );
   console.log(
-    `All time: ${formatDuration(allTimeSeconds)} (${files.length} recordings)`
+    `All time: ${formatDuration(allTimeSeconds)} (${formatRecordingCount(files.length)})`
   );
   console.log(`Named CBlog recordings: ${cblogFiles.length}`);
   console.log(
@@ -177,13 +185,12 @@ if (checkMode) {
 const entry = [
   `## v${version} - ${timestamp}`,
   "",
-  "### Guide",
-  "",
-  guide,
-  "",
-  "### Recorded Work Time",
-  "",
-  workTime,
+  `- Guide: ${guide}`,
+  `- Today: ${formatDuration(todaySeconds)} (${formatRecordingCount(todayFileCount)})`,
+  `- All time: ${formatDuration(allTimeSeconds)} (${formatRecordingCount(files.length)})`,
+  ...(activeCapCutRecording
+    ? [`- Active CapCut source: \`${basename(activeCapCutRecording)}\``]
+    : []),
   ""
 ].join("\n");
 const latestNotes = [
@@ -197,7 +204,7 @@ const latestNotes = [
   "",
   "## Developer Note",
   "",
-  workTime,
+  workTimeMarkdown,
   "",
   "Work time is the summed media duration of files containing `CBlog` in",
   "`D:\\OBS Recordings` plus the newest non-CBlog recording currently used",

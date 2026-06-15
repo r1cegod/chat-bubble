@@ -119,11 +119,8 @@ if "%BUMP%"=="" set "BUMP=patch"
 
 echo.
 set "RELEASE_GUIDE="
-set /p "RELEASE_GUIDE=Short guide / developer note for this release: "
-if not defined RELEASE_GUIDE (
-  echo A short release guide is required.
-  goto :failed
-)
+set /p "RELEASE_GUIDE=Guide (default: Download, extract, and follow QUICK START.txt): "
+if not defined RELEASE_GUIDE set "RELEASE_GUIDE=Download and extract ChatBubble.zip, then follow QUICK START.txt."
 
 echo.
 echo [3/5] Bumping version...
@@ -140,6 +137,11 @@ echo Creating release guide, developer note, and work-time totals...
 node.exe tools/create-release-note.mjs "%VERSION%"
 if errorlevel 1 goto :failed
 
+echo.
+set "COMMIT_MESSAGE="
+set /p "COMMIT_MESSAGE=Commit name (default Release %TAG%): "
+if not defined COMMIT_MESSAGE set "COMMIT_MESSAGE=Release %TAG%"
+
 git.exe rev-parse "%TAG%" >nul 2>nul
 if not errorlevel 1 (
   echo Tag %TAG% already exists locally.
@@ -153,7 +155,7 @@ if not errorlevel 1 (
 )
 
 git.exe add -A -- src/server
-git.exe commit --only -m "Release %TAG%" -- src/server
+git.exe commit --only -m "%COMMIT_MESSAGE%" -- src/server
 if errorlevel 1 goto :failed
 
 echo.

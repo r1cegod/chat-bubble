@@ -36,7 +36,8 @@ Publish a new release:
 3. Press Enter for the default patch bump, or enter `minor`, `major`, or an
    exact version such as `1.1.0`.
 4. Enter one short guide/developer note describing what changed and how to use
-   it.
+   it, or press Enter for the download/extract/Quick Start default.
+5. Enter the Git commit name, or press Enter to use `Release vX.Y.Z`.
 
 The release button automatically includes every tracked, modified, deleted, or
 new non-ignored file under `src/server/`. It does not ask you to select files,
