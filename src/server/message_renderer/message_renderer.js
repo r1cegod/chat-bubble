@@ -1,3 +1,126 @@
+////give message access to emoji and gif
+//lock path
+const STICKER_ASSETS = Object.freeze({
+    bonk: "./bonk.gif",
+    patpat: "./patpat.gif"
+});
+const EMOJI_ASSETS = Object.freeze({
+    lilyahem: "./emoji!/ahem.png",
+    lilyahhhh: "./emoji!/ahhhh.png",
+    lilyangel: "./emoji!/angel.png",
+    lilysmug: "./emoji!/baka~.png",
+    lilyblehh: "./emoji!/blehh.png",
+    lilycheering: "./emoji!/cheering.png",
+    lilydevil: "./emoji!/devil.png",
+    lilyshy: "./emoji!/ehhh.png",
+    lilyloveletter: "./emoji!/foryou.png",
+    lilyheart: "./emoji!/heart.png",
+    lilyknife: "./emoji!/heheh.png",
+    lilyboard: "./emoji!/heyy.png",
+    lilyhiii: "./emoji!/hiii.png",
+    lilymad: "./emoji!/hmmmm.png",
+    lilyhmph: "./emoji!/hmph.png",
+    lilysad: "./emoji!/huhu.png",
+    lilyquestionmark: "./emoji!/hum.png",
+    lilylike: "./emoji!/like.png",
+    lilybonk1: "./emoji!/nonono.png",
+    lilypatpat: "./emoji!/patpat.png",
+    lilyshutup: "./emoji!/shutup!!.png",
+    lilystaree: "./emoji!/staree.png",
+    lilytehee: "./emoji!/tehee.png",
+    lilyloading: "./emoji!/um.png",
+    lilynervous: "./emoji!/umm.png",
+    lilyuwaa: "./emoji!/uwaa.png",
+    lilygun: "./emoji!/wannadie.png",
+    lilywao: "./emoji!/wao.png",
+});
+//tokenizer
+function tokenizeMessage(message) {
+    const pattern = /:([a-z0-9_]+):/gi;
+    const tokens = [];
+    let cursor = 0;
+
+    for (const match of message.matchAll(pattern)) {
+        const start = match.index;
+        const end = start + match[0].length;
+        const name = match[1].toLowerCase();
+
+        if (start > cursor) {
+            tokens.push({
+                type: "text",
+                value: message.slice(cursor, start)
+            });
+        }
+
+        if (EMOJI_ASSETS[name]) {
+            tokens.push({
+                type: "emoji",
+                name,
+                src: EMOJI_ASSETS[name]
+            });
+        } else if (STICKER_ASSETS[name]) {
+            tokens.push({
+                type: "sticker",
+                name,
+                src: STICKER_ASSETS[name]
+            });
+        } else {
+            tokens.push({
+                type: "text",
+                value: match[0]
+            });
+        }
+
+        cursor = end;
+    }
+
+    if (cursor < message.length) {
+        tokens.push({
+            type: "text",
+            value: message.slice(cursor)
+        });
+    }
+
+    return tokens;
+}
+//assemble message
+function createMessageNodes(message) {
+    const fragment = document.createDocumentFragment();
+    const tokens = tokenizeMessage(String(message ?? ""));
+
+    for (const token of tokens) {
+        if (token.type === "text") {
+            fragment.append(
+                document.createTextNode(token.value)
+            );
+            continue;
+        }
+
+        if(token.type === "sticker") {
+            const image = document.createElement("img");
+            image.className = "message-sticker";
+            image.src = token.src;
+            image.alt = `:${token.name}:`;
+            image.draggable = false;
+
+            fragment.append(image);
+            continue;
+        }
+
+        const image = document.createElement("img");
+        image.className = "message-emoji";
+        image.src = token.src;
+        image.alt = `:${token.name}:`;
+        image.draggable = false;
+
+        fragment.append(image);
+    }
+
+    return fragment;
+}
+
+
+////bubble renderer
 export function renderMessage(messageData) {
     //role check
     const roleAllowed = ["viewer", "fox", "rice"]
@@ -93,7 +216,7 @@ export function renderMessage(messageData) {
 
     const messageText = document.createElement("span");
     messageText.className = "message";
-    messageText.textContent = messageData.message;
+    messageText.append(createMessageNodes(messageData.message));
 
     const cloudTemplate = document.querySelector(".cloud-template");
     const cloud = cloudTemplate.content.cloneNode(true);

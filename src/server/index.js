@@ -60,25 +60,58 @@ function isSafeFileName(fileName) {
 }
 
 function serverFile(request, response) {
+    let filePath
+
     const url = new URL(
         request.url,
         `http://${request.headers.host}`
     );
-    const fileName = decodeURIComponent(
-        url.pathname.slice(1)
-    );
 
-    if (!isSafeFileName(fileName)) {
-        response.writeHead(400);
-        response.end("Invalid file name");
-        return;
+    //emoji route
+    if (url.pathname.startsWith("/emoji!/")) {
+        const fileName = decodeURIComponent(
+            url.pathname.slice("/emoji!/".length)
+        );
+        const allowedExtensions = new Set([
+            ".png",
+            ".gif",
+            ".webp"
+        ]);
+
+        if (
+            !isSafeFileName(fileName) ||
+            !allowedExtensions.has(
+            path.extname(fileName).toLowerCase()
+            )
+        ) {
+            response.writeHead(400);
+            response.end("Invalid emote file");
+            return true;
+        }
+
+        filePath = path.join(
+            __dirname,
+            "message_renderer",
+            "emoji!",
+            fileName
+        );
+    } else {
+        const fileName = decodeURIComponent(
+            url.pathname.slice(1)
+        );
+
+        if (!isSafeFileName(fileName)) {
+            response.writeHead(400);
+            response.end("Invalid file name");
+            return;
+        }
+
+        filePath = path.join(
+            __dirname,
+            "message_renderer",
+            fileName
+        );
     }
-
-    const filePath = path.join(
-        __dirname,
-        "message_renderer",
-        fileName
-    );
 
     const contentTypes = {
         ".html": "text/html; charset=utf-8",
@@ -86,7 +119,8 @@ function serverFile(request, response) {
         ".js": "text/javascript; charset=utf-8",
         ".png": "image/png",
         ".gif": "image/gif",
-        ".svg": "image/svg+xml"
+        ".svg": "image/svg+xml",
+        ".webp": "image/webp"
     };
 
     const extension = path.extname(filePath).toLocaleLowerCase();
