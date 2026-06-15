@@ -136,6 +136,7 @@ function normalizeMessage(item) {
 
 
 function startChatStream(apiKey, liveChatId, onMessage) {
+  let streamEnded = false;
   const seenMessageIds = new Set();
 
   let initialSyncComplete = false;
@@ -146,7 +147,13 @@ function startChatStream(apiKey, liveChatId, onMessage) {
   const metadata = new grpc.Metadata();
   metadata.set("x-goog-api-key", apiKey);
 
+  console.log("Opening YouTube streamList call");
+
+  
   function openNextCall() {
+    let reconnectDelayMs = 1000;
+    if (stopped || streamEnded) return;
+
     const request = {
       live_chat_id: liveChatId,
       part: ["snippet", "authorDetails"],
@@ -157,24 +164,28 @@ function startChatStream(apiKey, liveChatId, onMessage) {
       request.page_token = nextPageToken;
     }
 
-    activeCall = youtubeClient.streamList(
-      request,
-      metadata
-    );
+    activeCall = youtubeClient.streamList(request,metadata);
 
     activeCall.on("data", (response) => {
+      let reconnectDelayMs = 1000;
+
       if (response.next_page_token) {
         nextPageToken = response.next_page_token
       }
       const items = response.items ?? [];
 
+      if (response.offline_at) {
+        streamEnded = true;
+        stopped = true;
+        console.log("YouTube stream is offline:", response.offline_at);
+        activeCall?.cancel();
+        return;
+      }
+
       if (!initialSyncComplete) {
         for (const item of items) {
           if (item.id) {
-            rememberMessageId(
-              seenMessageIds,
-              item.id
-            );
+            rememberMessageId(seenMessageIds,item.id);
           }
         }
         initialSyncComplete = true;
@@ -199,6 +210,17 @@ function startChatStream(apiKey, liveChatId, onMessage) {
     });
 
     activeCall.on("error", (error) => {
+      if (
+        error.code === grpc.status.RESOURCE_EXHAUSTED ||
+        error.code === grpc.status.PERMISSION_DENIED ||
+        error.code === grpc.status.INVALID_ARGUMENT ||
+        error.code === grpc.status.NOT_FOUND ||
+        error.code === grpc.status.FAILED_PRECONDITION
+      ) {
+        stopped = true;
+        streamEnded = true;
+      }
+
       console.error(
         "YouTube stream error:",
         error.code,
@@ -207,9 +229,22 @@ function startChatStream(apiKey, liveChatId, onMessage) {
     });
 
     activeCall.on("end", () => {
-      if (!stopped && nextPageToken) {
+      if (stopped || streamEnded || !nextPageToken) return;
+
+      if (streamEnded) {
+        console.log(`Stream ended; reconnecting in ${reconnectDelayMs}ms`);
+
+        reconnectDelayMs = Math.min(reconnectDelayMs * 2, 30000);
+
+        setTimeout(() => {
+          openNextCall();
+        }, reconnectDelayMs);
+      }
+
+      if (nextPageToken) {
         openNextCall();
       }
+
     });
 
     activeCall.on("status", (status) => {
