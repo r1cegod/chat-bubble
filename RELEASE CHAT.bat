@@ -98,7 +98,7 @@ if errorlevel 1 goto :failed
 
 if /i "%~1"=="check" (
   echo.
-  echo Checking CBlog recording totals...
+  echo Checking work-time totals...
   node.exe tools/create-release-note.mjs "0.0.0" --check
   if errorlevel 1 goto :failed
 
@@ -133,7 +133,7 @@ for /f "delims=" %%V in (
 set "TAG=v%VERSION%"
 
 echo.
-echo Creating release guide, developer note, and work-time totals...
+echo Creating release guide and work-time totals...
 node.exe tools/create-release-note.mjs "%VERSION%"
 if errorlevel 1 goto :failed
 

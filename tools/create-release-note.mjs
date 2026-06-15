@@ -42,9 +42,11 @@ async function collectFiles(directory) {
   return files;
 }
 
-async function findActiveCapCutRecording(directory, cblogFiles) {
+async function findSupplementalRecording(directory, primaryFiles) {
   const entries = await readdir(directory, { withFileTypes: true });
-  const cblogPaths = new Set(cblogFiles.map((filePath) => resolve(filePath)));
+  const primaryPaths = new Set(
+    primaryFiles.map((filePath) => resolve(filePath))
+  );
   const candidates = [];
 
   for (const entry of entries) {
@@ -56,7 +58,7 @@ async function findActiveCapCutRecording(directory, cblogFiles) {
     const extension = entry.name.toLowerCase().split(".").pop();
 
     if (
-      cblogPaths.has(resolve(filePath)) ||
+      primaryPaths.has(resolve(filePath)) ||
       !["mkv", "mp4", "mov", "webm"].includes(extension)
     ) {
       continue;
@@ -113,20 +115,16 @@ function formatDuration(totalSeconds) {
   return `${hours}h ${minutes}m ${seconds}s`;
 }
 
-function formatRecordingCount(count) {
-  return `${count} ${count === 1 ? "recording" : "recordings"}`;
-}
-
 const now = new Date();
 const todayKey = localDateKey(now);
-const cblogFiles = await collectFiles(recordingsRoot);
-const activeCapCutRecording = await findActiveCapCutRecording(
+const primaryFiles = await collectFiles(recordingsRoot);
+const supplementalRecording = await findSupplementalRecording(
   recordingsRoot,
-  cblogFiles
+  primaryFiles
 );
-const files = activeCapCutRecording
-  ? [...cblogFiles, activeCapCutRecording]
-  : cblogFiles;
+const files = supplementalRecording
+  ? [...primaryFiles, supplementalRecording]
+  : primaryFiles;
 let allTimeSeconds = 0;
 let todaySeconds = 0;
 let todayFileCount = 0;
@@ -154,31 +152,15 @@ const timestamp = now.toLocaleString("en-CA", {
   timeZoneName: "short"
 });
 const workTime = [
-  `- Today: **${formatDuration(todaySeconds)}** (${formatRecordingCount(todayFileCount)})`,
-  `- All time: **${formatDuration(allTimeSeconds)}** (${formatRecordingCount(files.length)})`
+  `- Today: **${formatDuration(todaySeconds)}**`,
+  `- All time: **${formatDuration(allTimeSeconds)}**`
 ];
-
-if (activeCapCutRecording) {
-  workTime.push(
-    `- Active CapCut source: \`${basename(activeCapCutRecording)}\``
-  );
-}
 
 const workTimeMarkdown = workTime.join("\n");
 
 if (checkMode) {
-  console.log(
-    `Today: ${formatDuration(todaySeconds)} (${formatRecordingCount(todayFileCount)})`
-  );
-  console.log(
-    `All time: ${formatDuration(allTimeSeconds)} (${formatRecordingCount(files.length)})`
-  );
-  console.log(`Named CBlog recordings: ${cblogFiles.length}`);
-  console.log(
-    activeCapCutRecording
-      ? `Active CapCut recording: ${basename(activeCapCutRecording)}`
-      : "Active CapCut recording: none found"
-  );
+  console.log(`Today: ${formatDuration(todaySeconds)}`);
+  console.log(`All time: ${formatDuration(allTimeSeconds)}`);
   process.exit(0);
 }
 
@@ -186,11 +168,8 @@ const entry = [
   `## v${version} - ${timestamp}`,
   "",
   `- Guide: ${guide}`,
-  `- Today: ${formatDuration(todaySeconds)} (${formatRecordingCount(todayFileCount)})`,
-  `- All time: ${formatDuration(allTimeSeconds)} (${formatRecordingCount(files.length)})`,
-  ...(activeCapCutRecording
-    ? [`- Active CapCut source: \`${basename(activeCapCutRecording)}\``]
-    : []),
+  `- Today: ${formatDuration(todaySeconds)}`,
+  `- All time: ${formatDuration(allTimeSeconds)}`,
   ""
 ].join("\n");
 const latestNotes = [
@@ -202,13 +181,9 @@ const latestNotes = [
   "",
   guide,
   "",
-  "## Developer Note",
+  "## Work Time",
   "",
   workTimeMarkdown,
-  "",
-  "Work time is the summed media duration of files containing `CBlog` in",
-  "`D:\\OBS Recordings` plus the newest non-CBlog recording currently used",
-  "as the active CapCut source. Today is grouped by last-modified date.",
   ""
 ].join("\n");
 

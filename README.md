@@ -50,11 +50,9 @@ The button configures Windows Git to use the authenticated GitHub CLI account
 over HTTPS before pushing, so it does not depend on a separate SSH key.
 
 Before committing, the button writes `src/server/RELEASE NOTES.md`, appends
-`src/server/DEV NOTES.md`, and totals the duration of every file containing
-`CBlog` under `D:\OBS Recordings`. It also includes the newest non-CBlog
-recording as the active CapCut source when that file cannot be renamed. It
-records both all-time work and work from files modified today. The guide
-appears on the GitHub Release and inside the downloaded package.
+`src/server/DEV NOTES.md`, and rescans local work recordings. Public notes show
+only today's work time and all-time work time. The guide appears on the GitHub
+Release and inside the downloaded package.
 
 Run a non-destructive readiness check from Command Prompt with:
 
