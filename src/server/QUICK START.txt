@@ -1,96 +1,100 @@
 CHAT BUBBLE - QUICK START
 =========================
 
-FIRST TIME
+FIRST-TIME SETUP
+----------------
 
 1. Extract the entire ChatBubble.zip file.
+   Do not run Chat Bubble from inside the ZIP.
+
 2. Open the extracted ChatBubble folder.
-3. Double-click START CHAT.bat.
-4. If asked, install Node.js LTS from the official page that opens.
-5. Open START CHAT.bat again after installing Node.js.
-6. Paste your YouTube Data API v3 key.
-7. Paste the YouTube livestream link. See the easy guide below.
 
-The starter copies the overlay URL. Paste it into OBS Browser Source or your
-normal browser.
+3. Double-click:
+   START CHAT.bat
 
-HOW TO GET THE LIVESTREAM LINK
+4. If Windows asks, allow Node.js to install.
+   After installation finishes, open START CHAT.bat again.
 
-EASIEST METHOD
+5. The first launch asks for your YouTube Data API key.
+   Paste it and press Enter. It is saved only on this computer.
 
-1. Open the livestream's normal YouTube page.
-2. Click Share under the video.
-3. Click Copy.
-4. Return to the black Chat Bubble window.
-5. Right-click to paste, then press Enter.
+6. Paste your YouTube livestream Share link and press Enter.
 
-Paste the whole link. You do not need to find or edit the video ID.
+7. Keep the Chat Bubble window open while streaming.
 
-WORKING EXAMPLES
 
-https://www.youtube.com/watch?v=AbCdEf12345
-https://www.youtube.com/live/AbCdEf12345
-https://youtu.be/AbCdEf12345
+ADD CHAT BUBBLE TO OBS
+----------------------
 
-In all three examples, the video ID is:
+1. In OBS, open your scene.
 
-AbCdEf12345
+2. In Sources, click + and select Browser.
 
-FALLBACK METHOD
+3. Name the source:
+   Chat Bubble
 
-If Share is unavailable, copy the full address from the browser's address bar.
-Make sure it is the actual video page, not:
+4. Enter these settings:
 
-- YouTube Studio
-- Your channel page
-- The YouTube home page
+   URL:    http://127.0.0.1:3000/chat_box
+   Width:  1400
+   Height: 3000
 
-OBS URL
+5. Click OK.
 
-http://127.0.0.1:3000/chat_box
+6. Resize and position Chat Bubble in your OBS scene.
 
-The starter copies this URL to your clipboard automatically.
-Add it to OBS as a Browser Source.
+IMPORTANT:
+Keep the Browser Source Width and Height at 1400 x 3000.
+To make Chat Bubble look smaller or larger, scale the source in the
+OBS preview instead of changing those browser dimensions.
 
-EVERY STREAM AFTER THAT
+
+EVERY STREAM AFTER SETUP
+------------------------
 
 1. Double-click START CHAT.bat.
-2. Open the livestream, click Share, click Copy, and paste the link.
-3. Keep the black Chat Bubble window open.
+2. Paste the current livestream Share link.
+3. Press Enter.
 
-UPDATE
+Your API key and OBS Browser Source stay saved.
 
-1. Close Chat Bubble.
-2. Double-click UPDATE CHAT.bat.
-3. Download ChatBubble.zip from the official GitHub release page.
-4. Extract it as a new folder.
-5. Copy ".env" from the old "ChatBubble Files" folder into the new
-   "ChatBubble Files" folder.
-6. Start the new copy. Delete the old folder after it works.
 
-UPDATE CHAT.bat only opens the official release page and displays these steps.
-It does not download, execute, extract, or replace any files.
+WHERE TO GET THE LIVESTREAM LINK
+--------------------------------
 
-Apart from copying ".env" during an update, you do not need to open or edit the
-"ChatBubble Files" folder.
+Use the Share link from your YouTube livestream:
 
-WHAT THE APP DOES
+https://www.youtube.com/watch?v=VIDEO_ID
 
-- The API key is saved locally in "ChatBubble Files\.env".
-- The API key is sent only to Google's YouTube API.
-- Chat Bubble connects to YouTube/Google for live chat.
-- UPDATE CHAT.bat only opens the public GitHub release page.
-- If Node.js is missing, START CHAT.bat opens the official Node.js download page.
-- All JavaScript dependencies are included in ChatBubble.zip.
-- The overlay runs only on this computer at 127.0.0.1.
-- Chat Bubble has no analytics, account system, or remote database.
+Short links also work:
 
-For safer key handling, restrict the key to "YouTube Data API v3" in Google
-Cloud Console. Do not send the key to anyone or show the .env file on stream.
+https://youtu.be/VIDEO_ID
 
-Chat Bubble does not run PowerShell, install software, or hide background
-windows. Node.js installation is a separate, visible user action.
+You may also paste the 11-character video ID by itself.
 
-STOP
 
-Press Ctrl+C in the Chat Bubble window, or close the window.
+UPDATE CHAT BUBBLE
+------------------
+
+1. Download the newest ChatBubble.zip release.
+2. Stop the old Chat Bubble window.
+3. Extract the new ZIP into a new folder.
+4. Run START CHAT.bat from the new folder.
+
+Your YouTube API key is stored in your Windows user profile, so you
+normally do not need to enter it again.
+
+
+STOP CHAT BUBBLE
+----------------
+
+Close the Chat Bubble window.
+
+
+SECURITY
+--------
+
+- Download releases only from the official GitHub Releases page.
+- Compare ChatBubble.zip with the published SHA-256 file when needed.
+- Check the release's VirusTotal safety report before running it.
+- Never share your YouTube API key or commit it to Git.
