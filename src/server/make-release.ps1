@@ -48,6 +48,10 @@ Copy-Item (
     Join-Path $PSScriptRoot "QUICK START.txt"
 ) $stagingPath
 
+Copy-Item (
+    Join-Path $PSScriptRoot "RELEASE NOTES.md"
+) $stagingPath
+
 @(
     "@echo off"
     "call `"%~dp0ChatBubble Files\START CHAT.bat`""
