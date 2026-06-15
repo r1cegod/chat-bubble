@@ -10,8 +10,8 @@ verification.
 Requirements:
 
 - Windows 10 or newer
-- Windows Package Manager (`winget`, included with current Windows App Installer)
-- Internet access on first start and when updating
+- Node.js LTS
+- Internet access while using YouTube chat
 
 Create the distributable folder:
 
@@ -33,18 +33,18 @@ First setup:
 4. Open the livestream on YouTube, click **Share**, click **Copy**, and paste
    the complete link.
 
-The launcher installs missing dependencies, copies the OBS URL to the
-clipboard, and opens the overlay automatically. `QUICK START.txt` contains the
-complete recipient instructions. `UPDATE CHAT.bat` only opens the official
-GitHub release page and displays manual replacement instructions. It does not
-download, execute, extract, or overwrite files.
+The package includes its JavaScript dependencies. If Node.js is missing, the
+launcher opens the official Node.js download page and stops; it never installs
+software. It copies the OBS URL to the clipboard without opening a hidden
+process. `QUICK START.txt` contains the complete recipient instructions.
+`UPDATE CHAT.bat` only opens the official GitHub release page and displays
+manual replacement instructions.
 
 The local API key is used only with Google's YouTube API. The application has
 no analytics, hosted backend, user account, or remote database. Runtime network
-access is limited to Google/YouTube, GitHub releases, the official Node.js
-package installed through winget, and the local `127.0.0.1` overlay.
-The BAT launchers use a process-only PowerShell execution-policy override for
-their included setup scripts; they do not modify the system's permanent policy.
+access is limited to Google/YouTube, GitHub release pages, the official Node.js
+download page when Node is missing, and the local `127.0.0.1` overlay. The
+distributed application does not invoke PowerShell or hide background windows.
 
 Active local workspace for the YouTube-targeted adaptive chat bubble.
 

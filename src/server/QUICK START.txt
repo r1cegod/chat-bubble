@@ -6,11 +6,13 @@ FIRST TIME
 1. Extract the entire ChatBubble.zip file.
 2. Open the extracted ChatBubble folder.
 3. Double-click START CHAT.bat.
-4. Allow the Windows installation prompt if one appears.
-5. Paste your YouTube Data API v3 key.
-6. Paste the YouTube livestream link. See the easy guide below.
+4. If asked, install Node.js LTS from the official page that opens.
+5. Open START CHAT.bat again after installing Node.js.
+6. Paste your YouTube Data API v3 key.
+7. Paste the YouTube livestream link. See the easy guide below.
 
-The overlay opens automatically in your browser.
+The starter copies the overlay URL. Paste it into OBS Browser Source or your
+normal browser.
 
 HOW TO GET THE LIVESTREAM LINK
 
@@ -78,16 +80,16 @@ WHAT THE APP DOES
 - The API key is sent only to Google's YouTube API.
 - Chat Bubble connects to YouTube/Google for live chat.
 - UPDATE CHAT.bat only opens the public GitHub release page.
-- First-time setup may install the official Node.js LTS package through winget.
+- If Node.js is missing, START CHAT.bat opens the official Node.js download page.
+- All JavaScript dependencies are included in ChatBubble.zip.
 - The overlay runs only on this computer at 127.0.0.1.
 - Chat Bubble has no analytics, account system, or remote database.
 
 For safer key handling, restrict the key to "YouTube Data API v3" in Google
 Cloud Console. Do not send the key to anyone or show the .env file on stream.
 
-Windows may show a permission prompt while Node.js is installed. The BAT files
-run the included PowerShell setup scripts with a process-only execution-policy
-override. They do not change the computer's permanent PowerShell policy.
+Chat Bubble does not run PowerShell, install software, or hide background
+windows. Node.js installation is a separate, visible user action.
 
 STOP
 

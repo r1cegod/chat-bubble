@@ -8,10 +8,6 @@ const protoPath = path.join(
   "stream_list.proto"
 );
 
-const googleProtoRoot = path.dirname(
-  require.resolve("google-proto-files/package.json")
-);
-
 const packageDefinition = protoLoader.loadSync(
   protoPath,
   {
@@ -19,8 +15,7 @@ const packageDefinition = protoLoader.loadSync(
     longs: String,
     enums: String,
     defaults: true,
-    oneofs: true,
-    includeDirs: [googleProtoRoot]
+    oneofs: true
   }
 );
 

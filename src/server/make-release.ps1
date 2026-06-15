@@ -16,7 +16,6 @@ New-Item -ItemType Directory -Force $appPath |
 Get-ChildItem $PSScriptRoot -Force | ForEach-Object {
     if ($_.Name -notin @(
         ".env",
-        "node_modules",
         "release",
         "make-release.ps1",
         "QUICK START.txt"
@@ -27,6 +26,19 @@ Get-ChildItem $PSScriptRoot -Force | ForEach-Object {
 
 Get-ChildItem $appPath -Filter "desktop.ini" -Recurse -Force |
     Remove-Item -Force
+
+$nodeModulesPath = Join-Path $appPath "node_modules"
+
+Remove-Item (
+    Join-Path $nodeModulesPath ".bin"
+) -Recurse -Force
+
+Get-ChildItem $nodeModulesPath -Directory -Recurse -Force |
+    Where-Object {
+        $_.Name -in @("test", "tests", "example", "examples")
+    } |
+    Sort-Object FullName -Descending |
+    Remove-Item -Recurse -Force
 
 Remove-Item (
     Join-Path $appPath "message_renderer\bubble_render_test.html"

@@ -2,12 +2,15 @@ syntax = "proto2";
 
 package youtube.api.v3;
 
-import "google/protobuf/duration.proto";
-
 service V3DataLiveChatMessageService {
   // Allows a user to load live chat through a server-streamed RPC.
   rpc StreamList(LiveChatMessageListRequest)
       returns (stream LiveChatMessageListResponse) {}
+}
+
+message Duration {
+  optional int64 seconds = 1;
+  optional int32 nanos = 2;
 }
 
 message LiveChatMessageListRequest {
@@ -358,7 +361,7 @@ message LiveChatGiftDetails {
   optional string gift_name = 1;
 
   // The duration of the gift.
-  optional google.protobuf.Duration gift_duration = 2;
+  optional Duration gift_duration = 2;
 
   // The value of the gift in jewels.
   optional int32 jewels_amount = 3;
