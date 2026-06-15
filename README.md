@@ -43,6 +43,9 @@ and it leaves changes outside `src/server/` untouched. It requires synchronized
 local syntax checks, bumps both server package files, commits, pushes, tags,
 and waits for the pre-publication safety workflow.
 
+The button configures Windows Git to use the authenticated GitHub CLI account
+over HTTPS before pushing, so it does not depend on a separate SSH key.
+
 Run a non-destructive readiness check from Command Prompt with:
 
 ```bat
@@ -52,9 +55,9 @@ Run a non-destructive readiness check from Command Prompt with:
 The fast **Release safety** workflow runs source checks, production dependency
 audits, Windows packaging, checksum verification, and VirusTotal scanning. It
 creates the GitHub Release only when every safety gate passes. The slower
-**Release behavior** workflow starts after publication, then builds the browser
-preview and smoke-tests the exact published ZIP. This keeps behavior validation
-visible without delaying release publication.
+**Release behavior** workflow is explicitly dispatched after publication, then
+builds the browser preview and smoke-tests the exact published ZIP. This keeps
+behavior validation visible without delaying release publication.
 
 The Actions tab is the fastest readout:
 

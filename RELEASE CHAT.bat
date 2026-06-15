@@ -44,6 +44,18 @@ if errorlevel 1 (
   goto :failed
 )
 
+gh.exe auth setup-git
+if errorlevel 1 (
+  echo GitHub CLI could not configure Git authentication.
+  goto :failed
+)
+
+git.exe remote set-url --push origin "https://github.com/%REPOSITORY%.git"
+if errorlevel 1 (
+  echo Could not configure the authenticated GitHub push URL.
+  goto :failed
+)
+
 gh.exe secret list --repo "%REPOSITORY%" | findstr /b /c:"VIRUSTOTAL_API_KEY" >nul
 if errorlevel 1 (
   echo GitHub secret VIRUSTOTAL_API_KEY is missing.
