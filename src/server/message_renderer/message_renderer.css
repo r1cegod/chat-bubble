@@ -28,18 +28,15 @@ body {
   background-size: 64px 64px;
 }
 
-.chat-preview {
-  width: var(--chat-preview-width, 1600px);
-  height: var(--chat-preview-height, 3000px);
+:root {
+  --chat-canvas-width: 1400px;
+  --chat-canvas-height: 3000px;
 }
 
+.chat-preview,
 .chat-viewport {
-  position: relative;
-  width: 1600px;
-  height: 3000px;
-  overflow: visible;
-  transform: scale(var(--chat-preview-scale, 1));
-  transform-origin: top left;
+  width: var(--chat-canvas-width);
+  height: var(--chat-canvas-height);
 }
 
 .chat-stack {

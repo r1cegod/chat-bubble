@@ -1,6 +1,6 @@
 ## Guide
 
-Download and extract ChatBubble.zip, then follow RELEASE NOTES.md and QUICK START.txt.
+Download and extract ChatBubble.zip, then follow QUICK START.txt.
 
 ## Work Time
 

@@ -4,8 +4,8 @@
 
 .messagebox {
   --box-width: 556px;
-  --box-min-width: 800px;
-  --box-max-width: 1272px;
+  --box-min-width: 650px;
+  --box-max-width: 1070px;
   --box-height: 156px;
   --box-min-height: 156px;
   --box-max-height: 780px;
