@@ -7,6 +7,8 @@ set "REPOSITORY=r1cegod/chat-bubble"
 set "DEFAULT_BRANCH=main"
 set "ACTIONS_URL=https://github.com/%REPOSITORY%/actions/workflows/release.yml"
 set "RELEASES_URL=https://github.com/%REPOSITORY%/releases"
+set "VERSION_BUMPED="
+set "RELEASE_COMMITTED="
 
 echo.
 echo ========================================
@@ -124,8 +126,13 @@ if not defined RELEASE_GUIDE set "RELEASE_GUIDE=Download and extract ChatBubble.
 
 echo.
 echo [3/5] Bumping version...
+for /f "delims=" %%V in (
+  'node.exe -p "require('./src/server/package.json').version"'
+) do set "OLD_VERSION=%%V"
+
 call npm.cmd --prefix src/server version "%BUMP%" --no-git-tag-version
 if errorlevel 1 goto :failed
+set "VERSION_BUMPED=1"
 
 for /f "delims=" %%V in (
   'node.exe -p "require('./src/server/package.json').version"'
@@ -157,6 +164,7 @@ if not errorlevel 1 (
 git.exe add -A -- src/server
 git.exe commit --only -m "%COMMIT_MESSAGE%" -- src/server
 if errorlevel 1 goto :failed
+set "RELEASE_COMMITTED=1"
 
 echo.
 echo [4/5] Pushing commit and release tag...
@@ -224,6 +232,11 @@ if errorlevel 1 (
 exit /b 0
 
 :failed
+if defined VERSION_BUMPED if not defined RELEASE_COMMITTED (
+  echo.
+  echo Restoring package version %OLD_VERSION%...
+  call npm.cmd --prefix src/server version "%OLD_VERSION%" --no-git-tag-version >nul
+)
 echo.
 echo Release stopped.
 echo No release is safe to assume until Release safety is green.

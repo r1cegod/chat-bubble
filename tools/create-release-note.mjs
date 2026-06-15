@@ -75,26 +75,31 @@ async function findSupplementalRecording(directory, primaryFiles) {
 function readDurationSeconds(filePath) {
   const ffprobeCommand =
     process.platform === "win32" ? "ffprobe.exe" : "ffprobe";
-  const output = execFileSync(
-    ffprobeCommand,
-    [
-      "-v",
-      "error",
-      "-show_entries",
-      "format=duration",
-      "-of",
-      "default=noprint_wrappers=1:nokey=1",
-      filePath
-    ],
-    { encoding: "utf8" }
-  ).trim();
-  const duration = Number(output);
+  try {
+    const output = execFileSync(
+      ffprobeCommand,
+      [
+        "-v",
+        "error",
+        "-show_entries",
+        "format=duration",
+        "-of",
+        "default=noprint_wrappers=1:nokey=1",
+        filePath
+      ],
+      {
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"]
+      }
+    ).trim();
+    const duration = Number(output);
 
-  if (!Number.isFinite(duration) || duration < 0) {
-    throw new Error(`Could not read duration: ${basename(filePath)}`);
+    return Number.isFinite(duration) && duration >= 0
+      ? duration
+      : null;
+  } catch {
+    return null;
   }
-
-  return duration;
 }
 
 function localDateKey(date) {
@@ -131,6 +136,11 @@ let todayFileCount = 0;
 
 for (const filePath of files) {
   const duration = readDurationSeconds(filePath);
+
+  if (duration === null) {
+    continue;
+  }
+
   const fileStats = await stat(filePath);
 
   allTimeSeconds += duration;
