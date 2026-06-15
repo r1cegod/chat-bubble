@@ -1,11 +1,65 @@
 # Adaptive Chat Bubble
 
+[![Release safety](https://github.com/r1cegod/chat-bubble/actions/workflows/release.yml/badge.svg)](https://github.com/r1cegod/chat-bubble/actions/workflows/release.yml)
+[![Release behavior](https://github.com/r1cegod/chat-bubble/actions/workflows/release-behavior.yml/badge.svg)](https://github.com/r1cegod/chat-bubble/actions/workflows/release-behavior.yml)
+
 ## Local YouTube Overlay
 
 **Download:** [ChatBubble.zip](https://github.com/r1cegod/chat-bubble/releases/latest/download/ChatBubble.zip)
 
 Published releases include `ChatBubble.zip.sha256` for manual integrity
-verification.
+verification. New tagged releases are built on GitHub Actions and published
+only after the generated ZIP passes the VirusTotal release gate with zero
+malicious and zero suspicious engine results. Each release also includes a
+sanitized `release-safety.json` report and a link to the public VirusTotal
+result.
+
+## Safe Release Workflow
+
+One-time setup:
+
+1. Revoke the VirusTotal key pasted into chat and create a replacement.
+2. Open the repository's **Settings > Secrets and variables > Actions**.
+3. Add a repository secret named `VIRUSTOTAL_API_KEY`.
+
+The release ZIP is already public software, and the workflow uploads it to
+VirusTotal's public scanning service. Never use this workflow for private
+artifacts.
+
+Test the gate without publishing from the GitHub **Actions** tab by running
+the **Release safety** workflow manually.
+
+Publish a new release:
+
+1. Put every intended distributed file under `src/server/`.
+2. Double-click `RELEASE CHAT.bat`.
+3. Press Enter for the default patch bump, or enter `minor`, `major`, or an
+   exact version such as `1.1.0`.
+
+The release button automatically includes every tracked, modified, deleted, or
+new non-ignored file under `src/server/`. It does not ask you to select files,
+and it leaves changes outside `src/server/` untouched. It requires synchronized
+`main`, checks GitHub authentication and the VirusTotal secret, performs fast
+local syntax checks, bumps both server package files, commits, pushes, tags,
+and waits for the pre-publication safety workflow.
+
+Run a non-destructive readiness check from Command Prompt with:
+
+```bat
+"RELEASE CHAT.bat" check
+```
+
+The fast **Release safety** workflow runs source checks, production dependency
+audits, Windows packaging, checksum verification, and VirusTotal scanning. It
+creates the GitHub Release only when every safety gate passes. The slower
+**Release behavior** workflow starts after publication, then builds the browser
+preview and smoke-tests the exact published ZIP. This keeps behavior validation
+visible without delaying release publication.
+
+The Actions tab is the fastest readout:
+
+- `Release safety` green: package/checksum/dependencies/VirusTotal passed.
+- `Release behavior` green: the published ZIP built and served correctly.
 
 Requirements:
 

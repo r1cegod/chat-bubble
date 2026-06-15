@@ -1,0 +1,137 @@
+name: Release behavior
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing release tag to check
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-behavior-${{ github.event.release.tag_name || inputs.release_tag }}
+  cancel-in-progress: false
+
+jobs:
+  behavior:
+    name: Check published release behavior
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release_tag }}
+
+    steps:
+      - name: Check out released source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install preview dependencies
+        shell: pwsh
+        run: npm ci
+
+      - name: Build browser preview
+        shell: pwsh
+        run: npm test
+
+      - name: Download published release assets
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          New-Item -ItemType Directory -Force behavior | Out-Null
+          gh release download $env:RELEASE_TAG `
+            --pattern "ChatBubble.zip" `
+            --pattern "ChatBubble.zip.sha256" `
+            --dir behavior
+
+      - name: Verify published checksum
+        shell: pwsh
+        run: |
+          $zip = "behavior/ChatBubble.zip"
+          $expected = (Get-Content "behavior/ChatBubble.zip.sha256").Split(" ")[0].Trim()
+          $actual = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+
+          if ($actual -ne $expected) {
+            throw "Published ZIP does not match its SHA-256 file."
+          }
+
+      - name: Smoke test published package
+        shell: pwsh
+        run: |
+          Expand-Archive behavior/ChatBubble.zip behavior/extracted -Force
+          $app = Resolve-Path "behavior/extracted/ChatBubble/ChatBubble Files"
+          $stdout = Join-Path $env:RUNNER_TEMP "chat-bubble.stdout.log"
+          $stderr = Join-Path $env:RUNNER_TEMP "chat-bubble.stderr.log"
+
+          $env:YOUTUBE_API_KEY = "behavior-check"
+          $env:YOUTUBE_VIDEO_ID = "behavior-check"
+          $process = Start-Process node `
+            -ArgumentList "index.js" `
+            -WorkingDirectory $app `
+            -PassThru `
+            -RedirectStandardOutput $stdout `
+            -RedirectStandardError $stderr
+
+          try {
+            $healthy = $false
+
+            for ($attempt = 0; $attempt -lt 20; $attempt += 1) {
+              Start-Sleep -Milliseconds 500
+
+              try {
+                $health = Invoke-RestMethod `
+                  -Uri "http://127.0.0.1:3000/health" `
+                  -TimeoutSec 2
+
+                if ($health.status -eq "healthy") {
+                  $healthy = $true
+                  break
+                }
+              } catch {
+              }
+            }
+
+            if (-not $healthy) {
+              Get-Content $stdout -ErrorAction SilentlyContinue
+              Get-Content $stderr -ErrorAction SilentlyContinue
+              throw "Published package did not expose a healthy local server."
+            }
+
+            $page = Invoke-WebRequest `
+              -Uri "http://127.0.0.1:3000/chat_box" `
+              -TimeoutSec 5
+
+            if ($page.StatusCode -ne 200) {
+              throw "Published package did not serve the chat page."
+            }
+          } finally {
+            Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
+          }
+
+      - name: Write behavior summary
+        shell: pwsh
+        run: |
+          @"
+          ## Release behavior
+
+          **Verdict:** PASS
+
+          - Release: ``$env:RELEASE_TAG``
+          - Browser preview build: passed
+          - Published checksum: passed
+          - Packaged ``/health`` endpoint: passed
+          - Packaged ``/chat_box`` endpoint: passed
+          "@ | Add-Content $env:GITHUB_STEP_SUMMARY

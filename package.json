@@ -19,6 +19,7 @@
     "dev:renderer": "vite \"src/message renderer\" --host 127.0.0.1 --port 5176 --open /message_renderer.html",
     "render:page": "node tools/render-page.mjs",
     "render:messagebox": "node tools/render-page.mjs src/messagebox/messagebox.html tests/screenshots/messagebox.png",
+    "scan:release": "node tools/virustotal-scan.mjs src/server/release/ChatBubble.zip src/server/release",
     "test": "npm run build"
   },
   "keywords": [],
