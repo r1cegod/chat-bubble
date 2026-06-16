@@ -1,0 +1,43 @@
+{
+    "chat-canvas-width": {
+        "type": "number",
+        "label": "Chat Canvas Width",
+        "value": "1400"
+    },
+    "chat-canvas-height": {
+        "type": "number",
+        "label": "Chat Canvas Height",
+        "value": "3000"
+    },
+    "name-font-size": {
+        "type": "number",
+        "label": "Name Font Size",
+        "value": "45"
+    },
+    "message-font-size": {
+        "type": "number",
+        "label": "Message Font Size",
+        "value": "60"
+    },
+    "sticker-size": {
+        "type": "number",
+        "label": "Sticker Size",
+        "value": "440"
+    },
+    "emoji-size": {
+        "type": "number",
+        "label": "Emoji Size",
+        "value": "110"
+    },
+    "assetBase": {
+        "type": "string",
+        "label": "Asset Base URL",
+        "value": ""
+    },
+    "maxVisible": {
+        "type": "number",
+        "label": "Max Visible Messages",
+        "value": "10"
+    }
+
+}

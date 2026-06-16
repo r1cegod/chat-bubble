@@ -1,0 +1,368 @@
+////field to css
+let widgetSettings = {
+  assetBase: "",
+  maxVisible: 10
+};
+function setCssVar(name, value, unit = "") {
+  if (value === undefined || value === null || value === "") return;
+  document.documentElement.style.setProperty(name, `${value}${unit}`);
+}
+function applyFieldData(fieldData = {}) {
+    widgetSettings = {
+        assetBase: fieldData.assetBase || "",
+        maxVisible: fieldData.maxVisible || 10
+    };
+
+    setCssVar("--chat-canvas-height", fieldData["chat-canvas-height"], "px");
+    setCssVar("--chat-canvas-width", fieldData["chat-canvas-width"], "px");
+    setCssVar("--name-font-size", fieldData["name-font-size"], "px");
+    setCssVar("--message-font-size", fieldData["message-font-size"], "px");
+    setCssVar("--sticker-size", fieldData["sticker-size"], "px");
+    setCssVar("--emoji-size", fieldData["emoji-size"], "px");
+}
+
+//////bubble renderer
+////give message access to emoji and gif
+//image url generator
+const DEFAULT_ASSET_BASE =
+  "https://cdn.jsdelivr.net/gh/r1cegod/chat-bubble@main/src/widget/mediasrc";
+
+const Assets = (() => {
+  function base() {
+    return String(widgetSettings.assetBase || DEFAULT_ASSET_BASE).replace(/\/+$/, "");
+  }
+
+  function url(...parts) {
+    return [base(), ...parts.map((part) => encodeURIComponent(part))].join("/");
+  }
+
+  return {
+    emoji: (filename) => url("emoji", filename),
+    sticker: (filename) => url("sticker", filename),
+    decor: (filename) => url("decor", filename)
+  };
+})();
+//lock path
+const STICKER_ASSETS = Object.freeze({
+    bonk: "bonk.gif",
+    patpat: "patpat.gif"
+});
+const EMOJI_ASSETS = Object.freeze({
+    lilyahem: "ahem.png",
+    lilyahhhh: "ahhhh.png",
+    lilyangel: "angel.png",
+    lilysmug: "baka~.png",
+    lilyblehh: "blehh.png",
+    lilycheering: "cheering.png",
+    lilydevil: "devil.png",
+    lilyshy: "ehhh.png",
+    lilyloveletter: "foryou.png",
+    lilyheart: "heart.png",
+    lilyknife: "heheh.png",
+    lilyboard: "heyy.png",
+    lilyhiii: "hiii.png",
+    lilymad: "hmmmm.png",
+    lilyhmph: "hmph.png",
+    lilysad: "huhu.png",
+    lilyquestionmark: "hum.png",
+    lilylike: "like.png",
+    lilybonk1: "nonono.png",
+    lilypatpat: "patpat.png",
+    lilyshutup: "shutup!!.png",
+    lilystaree: "staree.png",
+    lilytehee: "tehee.png",
+    lilyloading: "um.png",
+    lilynervous: "umm.png",
+    lilyuwaa: "uwaa.png",
+    lilygun: "wannadie.png",
+    lilywao: "wao.png",
+});
+//tokenizer
+function tokenizeMessage(message) {
+    let stickersingle = false;
+    const pattern = /:([a-z0-9_]+):/gi;
+    const tokens = [];
+    let cursor = 0;
+
+    for (const match of message.matchAll(pattern)) {
+        const start = match.index;
+        const end = start + match[0].length;
+        const name = match[1].toLowerCase();
+
+        if (start > cursor) {
+            tokens.push({
+                type: "text",
+                value: message.slice(cursor, start)
+            });
+        }
+
+        if (EMOJI_ASSETS[name]) {
+            tokens.push({
+                type: "emoji",
+                name,
+                src: Assets.emoji(EMOJI_ASSETS[name])
+            });
+        } else if (STICKER_ASSETS[name] && stickersingle === false) {
+            tokens.push({
+                type: "sticker",
+                name,
+                src: Assets.sticker(STICKER_ASSETS[name])
+            });
+            stickersingle = true
+        } else {
+            tokens.push({
+                type: "text",
+                value: match[0]
+            });
+        }
+
+        cursor = end;
+    }
+
+    if (cursor < message.length) {
+        tokens.push({
+            type: "text",
+            value: message.slice(cursor)
+        });
+    }
+
+    return tokens;
+}
+//assemble message
+function createMessageNodes(message) {
+    const fragment = document.createDocumentFragment();
+    const tokens = tokenizeMessage(String(message ?? ""));
+
+    for (const token of tokens) {
+        if (token.type === "text") {
+            fragment.append(
+                document.createTextNode(token.value)
+            );
+            continue;
+        }
+
+        if(token.type === "sticker") {
+            const image = document.createElement("img");
+            image.className = "message-sticker";
+            image.src = token.src;
+            image.alt = `:${token.name}:`;
+            image.draggable = false;
+
+            fragment.append(image);
+            continue;
+        }
+
+        const image = document.createElement("img");
+        image.className = "message-emoji";
+        image.src = token.src;
+        image.alt = `:${token.name}:`;
+        image.draggable = false;
+
+        fragment.append(image);
+    }
+
+    return fragment;
+}
+
+
+////bubble renderer
+function renderMessage(messageData) {
+    //role check
+    const roleAllowed = ["viewer", "fox", "rice"]
+    const roleRequested = messageData.role
+        ?.trim()
+        .toLowerCase();
+
+    const fallbackAvatar = Assets.emoji("hiii.png");
+
+    let role = "viewer";
+    let extraImage = "";
+    let imageStatus = Assets.decor("heartyheart.png");
+    let sparkImage = "";
+    let toprightImage = Assets.decor("moon.png");
+    let botright1Image = Assets.decor("flawa.png");
+    let botright2Image = Assets.decor("flawe.png");
+    let avatarUrl = messageData.avatarUrl;
+
+    if (roleAllowed.includes(roleRequested)) {
+        role = roleRequested;
+    }
+
+    //foxy
+    if (role === "fox") {
+        extraImage = Assets.decor("smolears.png");
+    }
+    if (role === "fox") {
+        imageStatus = Assets.decor("smallmoon.png");
+    }
+    if (role === "fox") {
+        sparkImage = Assets.decor("lightpinkheart.png");
+    }
+    if (role === "fox") {
+        toprightImage = "";
+    }
+    if (role === "fox") {
+        botright1Image = Assets.decor("lilytail.png");
+    }
+    if (role === "fox") {
+        botright2Image = "";
+    }
+
+    //ricy
+    if (messageData.name === "ricy_rice") {
+        role = "rice";
+    }
+    if (role === "rice") {
+        avatarUrl = Assets.sticker("patpat.gif");
+    }
+    if (role === "rice") {
+        imageStatus = Assets.decor("whiteheart.png");
+    }
+
+
+    const messageBubble = document.createElement("article");
+    messageBubble.className = "message-bubble";
+    messageBubble.dataset.role = role;
+
+
+    // avatar
+    const avatarBubble = document.createElement("div");
+    avatarBubble.className = "bubble-avatar";
+
+    const avatarBox = document.createElement("div");
+    avatarBox.className = "avatarbox";
+
+    const avatarImage = document.createElement("img");
+    avatarImage.className = "avatarbox-image";
+    avatarImage.alt = "";
+    avatarImage.addEventListener("error", () => {
+        avatarImage.src = fallbackAvatar;
+    }, {once: true});
+    avatarImage.src = avatarUrl || fallbackAvatar;
+
+    avatarBox.append(avatarImage);
+
+    const statusImage = document.createElement("img");
+    statusImage.className = "status-image";
+    statusImage.src = imageStatus;
+    statusImage.alt = "";
+
+    avatarBubble.append(avatarBox, statusImage);
+
+    //hold message box, nameplate, decs
+    const contentBubble = document.createElement("div");
+    contentBubble.className = "bubble-content";
+
+    // message box
+    const messageBox = document.createElement("div");
+    messageBox.className = "messagebox";
+
+    const messageText = document.createElement("span");
+    messageText.className = "message";
+    messageText.append(createMessageNodes(messageData.message));
+
+    const cloudTemplate = document.querySelector(".cloud-template");
+    const cloud = cloudTemplate.content.cloneNode(true);
+
+    messageBox.append(messageText, cloud);
+
+    //nameplate
+    const nameplateBox = document.createElement("div");
+    nameplateBox.className = "nameplate";
+
+    const nameplateText = document.createElement("span");
+    nameplateText.className = "nameplate-text";
+    nameplateText.textContent = messageData.name;
+
+    const nameplateSpark1 = document.createElement("img");
+    nameplateSpark1.className = "spark1";
+    nameplateSpark1.src = sparkImage;
+    nameplateSpark1.alt = "";
+
+    const nameplateSpark2 = document.createElement("img");
+    nameplateSpark2.className = "spark2";
+    nameplateSpark2.src = sparkImage;
+    nameplateSpark2.alt = "";
+
+    const nameplateExtra = document.createElement("img");
+    nameplateExtra.className = "extra";
+    nameplateExtra.src = extraImage;
+    nameplateExtra.alt = "";
+
+    nameplateBox.append(nameplateText, nameplateSpark1, nameplateSpark2);
+
+    //extra imgs
+    const imageTopright = document.createElement("img");
+    imageTopright.className = "topright";
+    imageTopright.src = toprightImage;
+    imageTopright.alt = "";
+
+    const imageBotright1 = document.createElement("img");
+    imageBotright1.className = "botright1";
+    imageBotright1.src = botright1Image;
+    imageBotright1.alt = "";
+
+    const imageBotright2 = document.createElement("img");
+    imageBotright2.className = "botright2";
+    imageBotright2.src = botright2Image;
+    imageBotright2.alt = "";
+
+    //put all that shi together
+    contentBubble.append(messageBox, nameplateBox, imageTopright, imageBotright1, imageBotright2, nameplateExtra);
+    messageBubble.append(avatarBubble, contentBubble);
+
+    return messageBubble;
+}
+
+//////chatrenderer
+function addMessage(messagePackage) {
+  const chatStack = document.querySelector(".chat-stack");
+  const maximumVisible = Number(widgetSettings.maxVisible) || 10;
+  const bubble = renderMessage(messagePackage);
+
+  chatStack.append(bubble);
+
+  if (chatStack.children.length > maximumVisible) {
+    chatStack.firstElementChild.remove();
+  }
+}
+//normalizers
+const RICE_YOUTUBE_CHANNEL_ID = "UCBR8-60-B28hp2BmDPdntcQ";
+function normalizeRole(data) {
+  const author = data.authorDetails || {};
+  if (author.channelId === RICE_YOUTUBE_CHANNEL_ID || data.userId === RICE_YOUTUBE_CHANNEL_ID) {
+    return "rice";
+  }
+  if (author.isChatOwner) {
+    return "fox";
+  }
+  return "viewer";
+}
+function normalizeStreamElementsMessage(data = {}) {
+  const snippet = data.snippet || {};
+  const textDetails = snippet.textMessageDetails || {};
+
+  return {
+    id: data.msgId || data.id || "",
+    userId: data.userId || data.authorDetails?.channelId || "",
+    name: data.displayName || data.authorDetails?.displayName || data.nick || "viewer",
+    message: data.text || textDetails.messageText || snippet.displayMessage || "",
+    avatarUrl: data.avatar || data.authorDetails?.profileImageUrl || "",
+    role: normalizeRole(data),
+    platform: "youtube",
+    timestamp: data.time || Date.parse(snippet.publishedAt) || Date.now(),
+    eventType: snippet.type || "message",
+    nativeEmotes: Array.isArray(data.emotes) ? data.emotes : []
+  };
+}
+
+//////Listenours
+window.addEventListener("onWidgetLoad", (obj) => {
+  applyFieldData(obj.detail.fieldData);
+});
+
+window.addEventListener("onEventReceived", (obj) => {
+  if (obj.detail.listener !== "message") return;
+  const messagePackage = normalizeStreamElementsMessage(obj.detail.event.data);
+  addMessage(messagePackage);
+});

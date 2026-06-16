@@ -1,0 +1,10 @@
+{
+    "chat-canvas-width": "1400",
+    "chat-canvas-height": "3000",
+    "name-font-size": "45",
+    "message-font-size": "60",
+    "sticker-size": "440",
+    "emoji-size": "110",
+    "assetBase": "",
+    "maxVisible": "10"
+}
