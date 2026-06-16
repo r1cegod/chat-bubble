@@ -1,100 +1,149 @@
 CHAT BUBBLE - QUICK START
 =========================
 
-FIRST-TIME SETUP
-----------------
+You are installing Chat Bubble as a StreamElements Custom Widget.
 
-1. Extract the entire ChatBubble.zip file.
-   Do not run Chat Bubble from inside the ZIP.
-
-2. Open the extracted ChatBubble folder.
-
-3. Double-click:
-   START CHAT.bat
-
-4. If Windows asks, allow Node.js to install.
-   After installation finishes, open START CHAT.bat again.
-
-5. The first launch asks for your YouTube Data API key.
-   Paste it and press Enter. It is saved only on this computer.
-
-6. Paste your YouTube livestream Share link and press Enter.
-
-7. Keep the Chat Bubble window open while streaming.
+You do NOT need to run a local server.
+You do NOT need a YouTube API key.
+You do NOT need to change OBS every stream after setup.
 
 
-ADD CHAT BUBBLE TO OBS
-----------------------
+1. CONNECT YOUTUBE TO STREAM ELEMENTS
+-------------------------------------
 
-1. In OBS, open your scene.
+1. Open StreamElements.
 
-2. In Sources, click + and select Browser.
+2. Log in with the YouTube channel you stream from.
 
-3. Name the source:
-   Chat Bubble
+3. Allow the YouTube permissions StreamElements asks for.
+   Use full permission for the channel connection so StreamElements can read
+   live chat events.
 
-4. Enter these settings:
+4. For the first test, use a public YouTube livestream.
 
-   URL:    http://127.0.0.1:3000/chat_box
+SE.Live note:
+SE.Live is optional. It only makes StreamElements easier to use inside OBS.
+The Chat Bubble widget still goes into the StreamElements overlay editor.
+
+
+2. CREATE THE OVERLAY
+---------------------
+
+1. In StreamElements, open Overlays.
+
+2. Create a new overlay/layout.
+
+3. Set the layout size to:
+
    Width:  1400
    Height: 3000
 
-5. Click OK.
+4. Add:
 
-6. Resize and position Chat Bubble in your OBS scene.
+   Static/Custom -> Custom Widget
 
-IMPORTANT:
-Keep the Browser Source Width and Height at 1400 x 3000.
-To make Chat Bubble look smaller or larger, scale the source in the
-OBS preview instead of changing those browser dimensions.
+5. Open the Custom Widget settings.
+
+6. Click:
+
+   Open Editor
 
 
-EVERY STREAM AFTER SETUP
+3. COPY AND PASTE THE WIDGET
+----------------------------
+
+In the StreamElements editor, paste each file into the matching tab:
+
+   HTML tab    <- widget.html
+   CSS tab     <- widget.css
+   JS tab      <- widget.js
+   Fields tab  <- widgetfield.json
+
+Then click Done/Save.
+
+Do not paste widgetdata.json into StreamElements.
+It is only a local test/reference file.
+
+
+4. COPY THE OVERLAY LINK
 ------------------------
 
-1. Double-click START CHAT.bat.
-2. Paste the current livestream Share link.
-3. Press Enter.
+1. Go back to the StreamElements overlay page.
 
-Your API key and OBS Browser Source stay saved.
+2. Copy the overlay URL.
 
-
-WHERE TO GET THE LIVESTREAM LINK
---------------------------------
-
-Use the Share link from your YouTube livestream:
-
-https://www.youtube.com/watch?v=VIDEO_ID
-
-Short links also work:
-
-https://youtu.be/VIDEO_ID
-
-You may also paste the 11-character video ID by itself.
+This is the URL you put into OBS.
 
 
-UPDATE CHAT BUBBLE
-------------------
-
-1. Download the newest ChatBubble.zip release.
-2. Stop the old Chat Bubble window.
-3. Extract the new ZIP into a new folder.
-4. Run START CHAT.bat from the new folder.
-
-Your YouTube API key is stored in your Windows user profile, so you
-normally do not need to enter it again.
-
-
-STOP CHAT BUBBLE
+5. ADD IT TO OBS
 ----------------
 
-Close the Chat Bubble window.
+1. Open OBS.
+
+2. Open your scene.
+
+3. In Sources, click +.
+
+4. Choose:
+
+   Browser
+
+5. Paste the StreamElements overlay URL.
+
+6. Set:
+
+   Width:  1400
+   Height: 3000
+
+7. Click OK.
+
+8. Resize the source in the OBS preview if you want it smaller or larger.
+
+IMPORTANT:
+Keep the Browser Source width and height at 1400 x 3000.
+Resize by scaling the source in OBS, not by changing those numbers.
 
 
-SECURITY
---------
+6. FIRST REAL TEST
+------------------
 
-- Download releases only from the official GitHub Releases page.
-- Compare ChatBubble.zip with the published SHA-256 file when needed.
-- Check the release's VirusTotal safety report before running it.
-- Never share your YouTube API key or commit it to Git.
+1. Start or schedule a public YouTube livestream.
+
+2. Send a chat message from another account or phone.
+
+3. Confirm the bubble appears in OBS.
+
+If nothing appears, check in this order:
+
+   1. YouTube account is connected to StreamElements.
+   2. The stream is public.
+   3. The Custom Widget was saved.
+   4. OBS is using the StreamElements overlay URL.
+   5. OBS Browser Source is 1400 x 3000.
+
+
+7. UPDATING CHAT BUBBLE
+-----------------------
+
+1. Download the newest ChatBubble.zip.
+
+2. Open your StreamElements Custom Widget editor.
+
+3. Replace the old tabs with the new files:
+
+   widget.html
+   widget.css
+   widget.js
+   widgetfield.json
+
+4. Save the widget.
+
+Your OBS Browser Source can keep the same overlay URL.
+
+
+8. SAFETY
+---------
+
+- Download ChatBubble.zip only from the official GitHub Releases page.
+- Check the release safety/VirusTotal report if Windows or OBS warns you.
+- Never paste private account passwords, tokens, or secrets into the widget.

@@ -1,6 +1,6 @@
 @echo off
 setlocal EnableExtensions
-title Chat Bubble Release
+title Chat Bubble Widget Release
 cd /d "%~dp0"
 
 set "REPOSITORY=r1cegod/chat-bubble"
@@ -12,18 +12,29 @@ set "RELEASE_COMMITTED="
 
 echo.
 echo ========================================
-echo          CHAT BUBBLE RELEASE
+echo      CHAT BUBBLE WIDGET RELEASE
 echo ========================================
+echo.
+echo This button releases the StreamElements widget handoff.
+echo.
+echo The user path is:
+echo   1. connect YouTube to StreamElements with full permission
+echo   2. make a StreamElements overlay/layout at 1400 x 3000
+echo   3. add Static/Custom - Custom Widget
+echo   4. Settings - Open Editor - copy/paste widget files
+echo   5. copy the StreamElements overlay link into OBS Browser Source
+echo.
+echo SE.Live is optional OBS convenience. StreamElements cloud owns hosting.
 echo.
 echo This button:
 echo   1. requires a synchronized main branch
-echo   2. includes every change under src/server automatically
-echo   3. bumps and commits the server version
-echo   4. creates and pushes the matching version tag
-echo   5. waits for the GitHub release-safety workflow
+echo   2. checks the widget JavaScript and JSON
+echo   3. builds the StreamElements widget ZIP locally
+echo   4. bumps and commits the release version plus widget handoff files
+echo   5. pushes main and the matching version tag
+echo   6. waits for the GitHub release-safety workflow
 echo.
-echo Changes outside src/server are left untouched.
-echo The slower behavior check runs after publication.
+echo Changes outside the widget/release handoff files are left untouched.
 if /i "%~1"=="check" echo CHECK MODE: no version, commit, tag, or release will be created.
 echo.
 
@@ -34,6 +45,9 @@ call :require_command node.exe Node.js
 if errorlevel 1 goto :failed
 
 call :require_command npm.cmd npm
+if errorlevel 1 goto :failed
+
+call :require_command powershell.exe PowerShell
 if errorlevel 1 goto :failed
 
 call :require_command gh.exe GitHub CLI
@@ -72,7 +86,12 @@ if /i not "%BRANCH%"=="%DEFAULT_BRANCH%" (
   goto :failed
 )
 
-echo [1/5] Synchronizing %DEFAULT_BRANCH%...
+echo Cleaning Windows metadata from Git internals...
+for /f "delims=" %%F in ('dir /b /s .git\desktop.ini 2^>nul') do (
+  del /f /q "%%F" >nul 2>nul
+)
+
+echo [1/6] Synchronizing %DEFAULT_BRANCH%...
 git.exe fetch origin "%DEFAULT_BRANCH%"
 if errorlevel 1 goto :failed
 
@@ -86,16 +105,27 @@ if not "%LOCAL_HEAD%"=="%REMOTE_HEAD%" (
 )
 
 echo.
-echo Server files included in this release:
-git.exe status --short -- src/server
+echo Widget/release files included:
+git.exe status --short -- "RELEASE CHAT.bat" src/widget "src/server/QUICK START.txt" src/server/make-release.ps1 "src/server/RELEASE NOTES.md" "src/server/DEV NOTES.md" src/server/package.json src/server/package-lock.json
 echo.
 
 echo.
-echo [2/5] Running fast local checks...
-call npm.cmd run check
+echo [2/6] Running widget checks...
+node.exe --check src/widget/widget.js
 if errorlevel 1 goto :failed
 
-call npm.cmd --prefix src/server run check
+node.exe -e "JSON.parse(require('fs').readFileSync('src/widget/widgetfield.json','utf8')); JSON.parse(require('fs').readFileSync('src/widget/widgetdata.json','utf8'));"
+if errorlevel 1 goto :failed
+
+for /f "delims=" %%F in ('dir /b /s src\widget\desktop*.ini 2^>nul') do (
+  echo Remove Windows metadata before release:
+  echo %%F
+  goto :failed
+)
+
+echo.
+echo [3/6] Building StreamElements widget package...
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File src/server/make-release.ps1
 if errorlevel 1 goto :failed
 
 if /i "%~1"=="check" (
@@ -106,11 +136,11 @@ if /i "%~1"=="check" (
 
   echo.
   echo ========================================
-  echo          RELEASE CHECK PASSED
+  echo        WIDGET RELEASE CHECK PASSED
   echo ========================================
   echo.
   echo GitHub login, VirusTotal secret, branch synchronization,
-  echo and fast source checks are ready.
+  echo widget syntax, widget JSON, and local package build are ready.
   exit /b 0
 )
 
@@ -121,11 +151,12 @@ if "%BUMP%"=="" set "BUMP=patch"
 
 echo.
 set "RELEASE_GUIDE="
-set /p "RELEASE_GUIDE=Guide (default: Download, extract, and follow QUICK START.txt): "
-if not defined RELEASE_GUIDE set "RELEASE_GUIDE=Download and extract ChatBubble.zip, then follow QUICK START.txt."
+set /p "RELEASE_GUIDE=Guide (default: StreamElements custom widget setup): "
+if not defined RELEASE_GUIDE set "RELEASE_GUIDE=Create a 1400 x 3000 StreamElements overlay, add Static/Custom - Custom Widget, open the editor, paste the widget files, save, copy the overlay link, and add it to OBS as a 1400 x 3000 Browser Source."
+set "RELEASE_GUIDE=%RELEASE_GUIDE%"
 
 echo.
-echo [3/5] Bumping version...
+echo [4/6] Bumping release version...
 for /f "delims=" %%V in (
   'node.exe -p "require('./src/server/package.json').version"'
 ) do set "OLD_VERSION=%%V"
@@ -140,7 +171,8 @@ for /f "delims=" %%V in (
 set "TAG=v%VERSION%"
 
 echo.
-echo Creating release guide and work-time totals...
+echo Creating release notes and work-time totals...
+set "RELEASE_GUIDE=%RELEASE_GUIDE%"
 node.exe tools/create-release-note.mjs "%VERSION%"
 if errorlevel 1 goto :failed
 
@@ -161,13 +193,15 @@ if not errorlevel 1 (
   goto :failed
 )
 
-git.exe add -A -- src/server
-git.exe commit --only -m "%COMMIT_MESSAGE%" -- src/server
+git.exe add -- "RELEASE CHAT.bat" src/widget "src/server/QUICK START.txt" src/server/make-release.ps1 "src/server/RELEASE NOTES.md" "src/server/DEV NOTES.md" src/server/package.json src/server/package-lock.json
+if errorlevel 1 goto :failed
+
+git.exe commit -m "%COMMIT_MESSAGE%"
 if errorlevel 1 goto :failed
 set "RELEASE_COMMITTED=1"
 
 echo.
-echo [4/5] Pushing commit and release tag...
+echo [5/6] Pushing commit and release tag...
 git.exe push origin "%DEFAULT_BRANCH%"
 if errorlevel 1 goto :failed
 
@@ -178,7 +212,7 @@ git.exe push origin "%TAG%"
 if errorlevel 1 goto :failed
 
 echo.
-echo [5/5] Waiting for GitHub release safety...
+echo [6/6] Waiting for GitHub release safety...
 set "RUN_ID="
 set /a "WAIT_ATTEMPT=0"
 
@@ -209,8 +243,7 @@ echo ========================================
 echo        RELEASE %TAG% PUBLISHED
 echo ========================================
 echo.
-echo VirusTotal and release safety passed.
-echo The slower Release behavior workflow is now running separately.
+echo StreamElements widget ZIP and safety report are published.
 echo.
 start "" "%RELEASES_URL%/tag/%TAG%"
 exit /b 0

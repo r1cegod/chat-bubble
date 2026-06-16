@@ -1,8 +1,9 @@
 $ErrorActionPreference = "Stop"
 
+$repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
+$widgetRoot = Join-Path $repoRoot "src\widget"
 $releaseRoot = Join-Path $PSScriptRoot "release"
 $stagingPath = Join-Path $releaseRoot "ChatBubble"
-$appPath = Join-Path $stagingPath "ChatBubble Files"
 $archivePath = Join-Path $releaseRoot "ChatBubble.zip"
 $checksumPath = Join-Path $releaseRoot "ChatBubble.zip.sha256"
 
@@ -10,39 +11,8 @@ if (Test-Path $releaseRoot) {
     Remove-Item $releaseRoot -Recurse -Force
 }
 
-New-Item -ItemType Directory -Force $appPath |
+New-Item -ItemType Directory -Force $stagingPath |
     Out-Null
-
-Get-ChildItem $PSScriptRoot -Force | ForEach-Object {
-    if ($_.Name -notin @(
-        ".env",
-        "release",
-        "make-release.ps1",
-        "QUICK START.txt"
-    )) {
-        Copy-Item $_.FullName $appPath -Recurse -Force
-    }
-}
-
-Get-ChildItem $appPath -Filter "desktop.ini" -Recurse -Force |
-    Remove-Item -Force
-
-$nodeModulesPath = Join-Path $appPath "node_modules"
-
-Remove-Item (
-    Join-Path $nodeModulesPath ".bin"
-) -Recurse -Force
-
-Get-ChildItem $nodeModulesPath -Directory -Recurse -Force |
-    Where-Object {
-        $_.Name -in @("test", "tests", "example", "examples")
-    } |
-    Sort-Object FullName -Descending |
-    Remove-Item -Recurse -Force
-
-Remove-Item (
-    Join-Path $appPath "message_renderer\bubble_render_test.html"
-) -Force
 
 Copy-Item (
     Join-Path $PSScriptRoot "QUICK START.txt"
@@ -52,19 +22,26 @@ Copy-Item (
     Join-Path $PSScriptRoot "RELEASE NOTES.md"
 ) $stagingPath
 
-@(
-    "@echo off"
-    "call `"%~dp0ChatBubble Files\START CHAT.bat`""
-) | Set-Content -Encoding ASCII (
-    Join-Path $stagingPath "START CHAT.bat"
-)
+foreach ($fileName in @(
+    "widget.html",
+    "widget.css",
+    "widget.js",
+    "widgetfield.json",
+    "widgetdata.json"
+)) {
+    Copy-Item (
+        Join-Path $widgetRoot $fileName
+    ) $stagingPath
+}
 
-@(
-    "@echo off"
-    "call `"%~dp0ChatBubble Files\UPDATE CHAT.bat`""
-) | Set-Content -Encoding ASCII (
-    Join-Path $stagingPath "UPDATE CHAT.bat"
-)
+Copy-Item (
+    Join-Path $widgetRoot "mediasrc"
+) (
+    Join-Path $stagingPath "mediasrc"
+) -Recurse -Force
+
+Get-ChildItem $stagingPath -Filter "desktop.ini" -Recurse -Force |
+    Remove-Item -Force
 
 Compress-Archive -Path $stagingPath -DestinationPath $archivePath -Force
 
