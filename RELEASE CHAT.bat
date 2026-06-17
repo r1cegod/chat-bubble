@@ -86,13 +86,14 @@ if /i not "%BRANCH%"=="%DEFAULT_BRANCH%" (
   goto :failed
 )
 
-echo Cleaning Windows metadata from Git internals...
-for /f "delims=" %%F in ('dir /b /s .git\desktop.ini 2^>nul') do (
-  del /f /q "%%F" >nul 2>nul
-)
+call :clean_git_metadata
+if errorlevel 1 goto :failed
 
 echo [1/6] Synchronizing %DEFAULT_BRANCH%...
 git.exe fetch origin "%DEFAULT_BRANCH%"
+if errorlevel 1 goto :failed
+
+call :clean_git_metadata
 if errorlevel 1 goto :failed
 
 for /f "delims=" %%H in ('git.exe rev-parse HEAD') do set "LOCAL_HEAD=%%H"
@@ -196,16 +197,25 @@ if not errorlevel 1 (
 git.exe add -- "RELEASE CHAT.bat" src/widget "src/server/QUICK START.txt" src/server/make-release.ps1 "src/server/RELEASE NOTES.md" "src/server/DEV NOTES.md" src/server/package.json src/server/package-lock.json
 if errorlevel 1 goto :failed
 
+call :clean_git_metadata
+if errorlevel 1 goto :failed
+
 git.exe commit -m "%COMMIT_MESSAGE%"
 if errorlevel 1 goto :failed
 set "RELEASE_COMMITTED=1"
 
 echo.
 echo [5/6] Pushing commit and release tag...
+call :clean_git_metadata
+if errorlevel 1 goto :failed
+
 git.exe push origin "%DEFAULT_BRANCH%"
 if errorlevel 1 goto :failed
 
 git.exe tag -a "%TAG%" -m "Chat Bubble %TAG%"
+if errorlevel 1 goto :failed
+
+call :clean_git_metadata
 if errorlevel 1 goto :failed
 
 git.exe push origin "%TAG%"
@@ -260,6 +270,15 @@ exit /b 0
 where %~1 >nul 2>nul
 if errorlevel 1 (
   echo Missing required tool: %~2
+  exit /b 1
+)
+exit /b 0
+
+:clean_git_metadata
+echo Cleaning Windows metadata from Git internals...
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-ChildItem -LiteralPath '.git' -Filter 'desktop.ini' -Recurse -Force -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue"
+if errorlevel 1 (
+  echo Could not clean Windows desktop.ini metadata from .git.
   exit /b 1
 )
 exit /b 0

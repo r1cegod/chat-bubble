@@ -79,7 +79,6 @@ const EMOJI_ASSETS = Object.freeze({
 });
 //tokenizer
 function tokenizeMessage(message) {
-    let stickersingle = false;
     const pattern = /:([a-z0-9_]+):/gi;
     const tokens = [];
     let cursor = 0;
@@ -102,13 +101,12 @@ function tokenizeMessage(message) {
                 name,
                 src: Assets.emoji(EMOJI_ASSETS[name])
             });
-        } else if (STICKER_ASSETS[name] && stickersingle === false) {
-            tokens.push({
+        } else if (STICKER_ASSETS[name]) {
+            return [{
                 type: "sticker",
                 name,
                 src: Assets.sticker(STICKER_ASSETS[name])
-            });
-            stickersingle = true
+            }];
         } else {
             tokens.push({
                 type: "text",
@@ -174,7 +172,7 @@ function renderMessage(messageData) {
         .toLowerCase();
 
     const fallbackAvatar = Assets.emoji("hiii.png");
-
+    
     let role = "viewer";
     let extraImage = "";
     let imageStatus = Assets.decor("heartyheart.png");
@@ -182,6 +180,7 @@ function renderMessage(messageData) {
     let toprightImage = Assets.decor("moon.png");
     let botright1Image = Assets.decor("flawa.png");
     let botright2Image = Assets.decor("flawe.png");
+    let imageStatus2 = "";
     let avatarUrl = messageData.avatarUrl;
 
     if (roleAllowed.includes(roleRequested)) {
@@ -219,6 +218,28 @@ function renderMessage(messageData) {
         imageStatus = Assets.decor("whiteheart.png");
     }
 
+    ////special date
+    const now = new Date();
+    const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Bangkok',
+        month: '2-digit',
+        day: '2-digit'
+    });
+    const parts = formatter.formatToParts(now);
+    const gmt7 = Object.fromEntries(parts.map(p => [p.type, p.value]));
+    const month = gmt7.month;
+    const day = gmt7.day;
+
+    //fox birthday
+    if (month === "06" && day === "14" && role === "fox") {
+        imageStatus2 = Assets.decor("birthdayhat.png");
+        imageStatus = "";
+    }
+    //Woman's day
+    if (month === "03" && day === "08" && role === "fox") {
+        botright1Image = Assets.decor("rose.png")
+    }
+
 
     const messageBubble = document.createElement("article");
     messageBubble.className = "message-bubble";
@@ -246,8 +267,12 @@ function renderMessage(messageData) {
     statusImage.className = "status-image";
     statusImage.src = imageStatus;
     statusImage.alt = "";
+    const statusImage2 = document.createElement("img");
+    statusImage2.className = "status-image2";
+    statusImage2.src = imageStatus2;
+    statusImage2.alt = "";
 
-    avatarBubble.append(avatarBox, statusImage);
+    avatarBubble.append(avatarBox, statusImage, statusImage2);
 
     //hold message box, nameplate, decs
     const contentBubble = document.createElement("div");
@@ -267,6 +292,8 @@ function renderMessage(messageData) {
     messageBox.append(messageText, cloud);
 
     //nameplate
+    const nameplateBoxC = document.createElement("div");
+    nameplateBoxC.className = "nameplateC";
     const nameplateBox = document.createElement("div");
     nameplateBox.className = "nameplate";
 
@@ -290,6 +317,7 @@ function renderMessage(messageData) {
     nameplateExtra.alt = "";
 
     nameplateBox.append(nameplateText, nameplateSpark1, nameplateSpark2);
+    nameplateBoxC.append(nameplateExtra);
 
     //extra imgs
     const imageTopright = document.createElement("img");
@@ -308,7 +336,7 @@ function renderMessage(messageData) {
     imageBotright2.alt = "";
 
     //put all that shi together
-    contentBubble.append(messageBox, nameplateBox, imageTopright, imageBotright1, imageBotright2, nameplateExtra);
+    contentBubble.append(messageBox, nameplateBoxC, nameplateBox, imageTopright, imageBotright1, imageBotright2);
     messageBubble.append(avatarBubble, contentBubble);
 
     return messageBubble;
@@ -327,7 +355,7 @@ function addMessage(messagePackage) {
   }
 }
 //normalizers
-const RICE_YOUTUBE_CHANNEL_ID = "UCBR8-60-B28hp2BmDPdntcQ";
+const RICE_YOUTUBE_CHANNEL_ID = "U";
 function normalizeRole(data) {
   const author = data.authorDetails || {};
   if (author.channelId === RICE_YOUTUBE_CHANNEL_ID || data.userId === RICE_YOUTUBE_CHANNEL_ID) {

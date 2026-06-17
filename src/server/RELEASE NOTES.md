@@ -4,5 +4,5 @@ Create a 1400 x 3000 StreamElements overlay, add Static/Custom - Custom Widget, 
 
 ## Work Time
 
-- Today: **7h 5m 44s**
+- Today: **0h 0m 0s**
 - All time: **49h 16m 48s**

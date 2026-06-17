@@ -30,3 +30,9 @@
 - Today: 7h 5m 44s
 - All time: 49h 16m 48s
 
+## v1.2.1 - 2026-06-17, 19:52:57 GMT+7
+
+- Guide: Create a 1400 x 3000 StreamElements overlay, add Static/Custom - Custom Widget, open the editor, paste the widget files, save, copy the overlay link, and add it to OBS as a 1400 x 3000 Browser Source.
+- Today: 0h 0m 0s
+- All time: 49h 16m 48s
+
