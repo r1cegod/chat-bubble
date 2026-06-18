@@ -208,14 +208,14 @@ function renderMessage(messageData) {
     }
 
     //ricy
-    if (messageData.name === "ricy_rice") {
-        role = "rice";
-    }
-    if (role === "rice") {
+    /*if (role === "rice") {
         avatarUrl = Assets.sticker("patpat.gif");
-    }
+    }*/
     if (role === "rice") {
         imageStatus = Assets.decor("whiteheart.png");
+    }
+    if (role === "rice") {
+        sparkImage = Assets.decor("sparkyspark.png");
     }
 
     ////special date
@@ -282,14 +282,32 @@ function renderMessage(messageData) {
     const messageBox = document.createElement("div");
     messageBox.className = "messagebox";
 
+    const messageBoxBg = document.createElement("div");
+    messageBoxBg.className = "messagebox-bg";
+
+    const messageBoxOutline = document.createElement("div");
+    messageBoxOutline.className = "messagebox-outline";
+
     const messageText = document.createElement("span");
     messageText.className = "message";
     messageText.append(createMessageNodes(messageData.message));
 
-    const cloudTemplate = document.querySelector(".cloud-template");
-    const cloud = cloudTemplate.content.cloneNode(true);
+    const imageBotright1 = document.createElement("img");
+    imageBotright1.className = "botright1";
+    imageBotright1.src = botright1Image;
+    imageBotright1.alt = "";
 
-    messageBox.append(messageText, cloud);
+    const imageBotright2 = document.createElement("img");
+    imageBotright2.className = "botright2";
+    imageBotright2.src = botright2Image;
+    imageBotright2.alt = "";
+
+    const bigCloudTemplate = document.querySelector(".bigcloud-template");
+    const bigCloud = bigCloudTemplate?.content.cloneNode(true) ?? document.createDocumentFragment();
+    const smallCloudTemplate = document.querySelector(".smallcloud-template");
+    const smallCloud = smallCloudTemplate?.content.cloneNode(true) ?? document.createDocumentFragment();
+
+    messageBox.append(messageBoxBg, messageBoxOutline, messageText, imageBotright1, imageBotright2, bigCloud, smallCloud);
 
     //nameplate
     const nameplateBoxC = document.createElement("div");
@@ -325,18 +343,8 @@ function renderMessage(messageData) {
     imageTopright.src = toprightImage;
     imageTopright.alt = "";
 
-    const imageBotright1 = document.createElement("img");
-    imageBotright1.className = "botright1";
-    imageBotright1.src = botright1Image;
-    imageBotright1.alt = "";
-
-    const imageBotright2 = document.createElement("img");
-    imageBotright2.className = "botright2";
-    imageBotright2.src = botright2Image;
-    imageBotright2.alt = "";
-
     //put all that shi together
-    contentBubble.append(messageBox, nameplateBoxC, nameplateBox, imageTopright, imageBotright1, imageBotright2);
+    contentBubble.append(messageBox, nameplateBoxC, nameplateBox, imageTopright);
     messageBubble.append(avatarBubble, contentBubble);
 
     return messageBubble;
@@ -355,7 +363,7 @@ function addMessage(messagePackage) {
   }
 }
 //normalizers
-const RICE_YOUTUBE_CHANNEL_ID = "U";
+const RICE_YOUTUBE_CHANNEL_ID = "UC7OCsHMf-2UtZIc59hN8uug";
 function normalizeRole(data) {
   const author = data.authorDetails || {};
   if (author.channelId === RICE_YOUTUBE_CHANNEL_ID || data.userId === RICE_YOUTUBE_CHANNEL_ID) {

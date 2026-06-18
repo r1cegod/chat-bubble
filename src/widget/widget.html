@@ -2,45 +2,46 @@
     <main class="chat-viewport">
         <section class="chat-stack"></section>
 
-        <template class="cloud-template">
+        <template class="bigcloud-template">
             <svg
-            class="cloud-corner"
-            viewBox="127.72 105.02 66.44 37.54"
-            aria-hidden="true"
-            >
-            <svg
-                x="127.72"
-                y="105.02"
-                width="66.44"
-                height="23.68"
-                viewBox="127.72 105.02 66.44 23.68"
-                overflow="hidden"
+                class="bigcloud"
+                viewBox="0 0 240 240"
                 aria-hidden="true"
             >
                 <path
-                class="cloud-highlight"
-                d="
-                    M128.436 122.64
-                    c2.651-17.241 23.788-23.283 35.508-8.651
-                    c11.439-3.6 16.911 7.307 16.39 9.058
-                    c7.501 1.683 13.106 8.384 13.106 16.393
-                    v2.4
-                    H128.436
-                    Z
-                "
+                    class="decor-cloud-material"
+                    transform="translate(41.52, 139.92)"
+                    d="M0 0.06L135.6 0"
+                />
+                <path
+                    class="decor-cloud-material"
+                    transform="translate(43.8, 77.8566081871345)"
+                    d="M0 61.1034C3.44 21.1834 24.48 0.823392 63.12 0.0233918C101.76 -0.776608 124.32 18.9434 130.8 59.1834C130.8 59.1834 87.2 59.8234 0 61.1034Z"
+                />
+                <path
+                    class="decor-cloud-outline decor-cloud-outline-big"
+                    transform="matrix(3.62027169936394 0 0 3.62027169936394 41.7542180636129 74.2051613361269)"
+                    d="M0 18.0897C0.0162101 -3.96524 29.4828 -4.77943 35.5097 9.83681C35.5842 9.92726 37.4047 13.6295 37.4205 18.1302"
                 />
             </svg>
+        </template>
 
-            <path
-                class="cloud-outline"
-                d="
-                M128.436 122.64
-                c2.651-17.241 23.788-23.283 35.508-8.651
-                c11.439-3.6 16.911 7.307 16.39 9.058
-                c7.501 1.683 13.106 8.384 13.106 16.393
-                v2.4
-                "
-            />
+        <template class="smallcloud-template">
+            <svg
+                class="smallcloud"
+                viewBox="0 0 240 240"
+                aria-hidden="true"
+            >
+                <path
+                    class="decor-cloud-material"
+                    transform="translate(168.3075, 107.833686786297)"
+                    d="M0 3.01631C5.36 13.6563 6.8075 23.4563 4.3425 32.4163C19.1425 32.4963 35.8325 32.3063 50.6325 32.3863C44.1975 4.20631 27.32 -5.58369 0 3.01631Z"
+                />
+                <path
+                    class="decor-cloud-outline"
+                    transform="translate(170.2125, 106.568175539758)"
+                    d="M0 3.17182C27.4 -7.27818 51.42 9.46182 51.42 33.3818"
+                />
             </svg>
         </template>
     </main>

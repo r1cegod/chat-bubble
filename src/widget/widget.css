@@ -78,9 +78,10 @@
   --spark2-top: -40px;
   --highlight-color: #f0bee5;
   --botright1-width: 202px;
-  --botright1-bot: -30px;
+  --botright1-bot: -44px;
   --botright1-right: -70px;
-  --botright1-rotate: -6.5deg;
+  --botright1-rotate: -7deg;
+  --botright1-animation: spinin-bl 800ms both;
 }
 
 .bubble-avatar {
@@ -115,7 +116,7 @@
 
   position: absolute;
   left: var(--side-offset);
-  top: -70px;
+  top: -67px;
 
   width: var(--plate-width);
   min-width: var(--plate-min-width);
@@ -133,9 +134,10 @@
   border-radius: var(--corner-radius);
   overflow: visible;
   transform: rotate(var(--plate-tilt));
-  transform-origin: center;
+  transform-origin: bottom left;
 
-  z-index: 3;
+  z-index: 5;
+  animation: scalefade-bl 320ms ease-out;
 }
 
 .nameplateC{
@@ -148,7 +150,7 @@
 
   position: absolute;
   left: var(--side-offset);
-  top: -70px;
+  top: -67px;
 
   width: var(--plate-width);
   min-width: var(--plate-min-width);
@@ -159,9 +161,10 @@
   
   height: var(--plate-height);
   transform: rotate(var(--plate-tilt));
-  transform-origin: center;
+  transform-origin: bottom left;
 
   z-index: 1;
+  animation: scalefade-bl 320ms ease-out;
 }
 
 .nameplate-text {
@@ -191,6 +194,7 @@
 
   top: var(--spark1-top);
   right: -40px;
+  animation: spinin1 800ms both;
 }
 
 .spark2 {
@@ -203,6 +207,7 @@
   right: -95px;
   transform: rotate(15deg);
   transform-origin: center;
+  animation: spinin2 800ms both;
 }
 
 .extra {
@@ -231,12 +236,6 @@
 
   position: relative;
   overflow: visible;
-  background:
-    linear-gradient(
-      to bottom,
-      var(--highlight-color) 0 var(--highlight-height),
-      var(--inside-color) var(--highlight-height) 100%
-    );
 
   width: fit-content;
   min-width: var(--box-min-width);
@@ -248,20 +247,39 @@
   align-items: center;
   justify-content: center;
 
-  border: var(--line-width) solid var(--outline-color);
-  border-radius: var(--box-corner-radius);
   padding: var(--box-padding-y) var(--box-padding-x);
 
+  z-index: 1;
+  animation: popin-tl 800ms both;
+}
+
+.messagebox-bg {
+  background:
+    linear-gradient(
+      to bottom,
+      var(--highlight-color) 0 var(--highlight-height),
+      var(--inside-color) var(--highlight-height) 100%
+    );
+  inset: var(--line-width);
+  border-radius: calc(var(--box-corner-radius) - var(--line-width));
+  position: absolute;
+  z-index: 3;
+}
+
+.messagebox-outline {
+  border: var(--line-width) solid var(--outline-color);
+  border-radius: var(--box-corner-radius);
+  position: absolute;
+  inset: 0;
   z-index: 1;
 }
 
 .message {
   position: relative;
-  z-index: 3;
+  z-index: 4;
 
   display: -webkit-box;
   width: 100%;
-  max-height: calc(var(--message-max-lines) * 1.4em);
 
   color: var(--outline-color);
   font-family: "Comic Sans MS", "Trebuchet MS", "Arial Rounded MT Bold", system-ui, sans-serif;
@@ -278,28 +296,55 @@
   -webkit-line-clamp: var(--message-max-lines);
 }
 
-.cloud-corner {
+.bigcloud{
   position: absolute;
   z-index: 2;
-  top: -77px;
-  right: -5.7px;
-
-  width: 277px;
-  height: auto;
-
+  top: -168px;
+  right: 7px;
+  width: 340px;
+  height: 310px;
+  overflow: visible;
   pointer-events: none;
+  transform-box: fill-box;
+}
+.smallcloud {
+  position: absolute;
+  z-index: 2;
+  top: -175px;
+  right: 22px;
+  width: 320px;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+  transform-box: fill-box;
 }
 
-.cloud-highlight {
+.bigcloud {
+  transform-origin: 44% 58%;
+  animation: cloudin 900ms ease-out;
+}
+
+.smallcloud {
+  transform-origin: 78% 58%;
+  animation: cloudin2 900ms ease-out;
+}
+
+.decor-cloud-material {
   fill: var(--highlight-color);
+  stroke: var(--highlight-color);
+  stroke-width: 5.28;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.cloud-outline {
+.decor-cloud-outline {
   fill: none;
   stroke: var(--outline-color);
+  stroke-width: 5.28;
+}
+
+.decor-cloud-outline-big {
   stroke-width: 1.44;
-  stroke-linecap: round;
-  stroke-linejoin: bevel;
 }
 
 .topright {
@@ -310,6 +355,7 @@
 
   top: -130px;
   right: -50px;
+  animation: slidein-l 1200ms both;
 }
 
 .botright1 {
@@ -322,6 +368,7 @@
   right: var(--botright1-right);
   transform-origin: center;
   transform: rotate(var(--botright1-rotate));
+  animation: var(--botright1-animation);
 }
 
 .botright2 {
@@ -353,14 +400,6 @@
   pointer-events: none;
 }
 
-.message:has(.message-sticker) {
-  max-height: none;
-  -webkit-line-clamp: unset;
-}
-
-.message:has(.message-emoji) {
-  max-height: none;
-}
 
 /*avatarbox*/
 .avatarbox {
@@ -411,5 +450,149 @@
   left: -35px;
 
   transform: rotate(-10deg);
-  transform-origin: center
+  transform-origin: center;
+}
+
+
+/* AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA fucking nimation....*/
+/* message box */
+@keyframes popin-tl {
+  0% {
+    transform: scale(0);
+    transform-origin: 0% 0%;
+    opacity: 0;
+    animation-timing-function: ease-out;
+  }
+  40% {
+    transform: scale(1.05);
+    transform-origin: 0% 0%;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(.45,0,.46,1);
+  }
+  70% {
+    transform: scale(0.95);
+    transform-origin: 0% 0%;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(.45,0,.46,1);
+  }
+  100% {
+    transform: scale(1);
+    transform-origin: 0% 0%;
+    opacity: 1;
+  }
+}
+/* nameplate */
+@keyframes scalefade-bl {
+  0% {
+    transform: scale(0) rotate(10deg);
+    transform-origin: bottom left;
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(-1deg);
+    transform-origin: bottom left;
+    opacity: 1;
+  }
+}
+/* topright */
+@keyframes slidein-l {
+  0% {
+    transform: translateX(50px) rotate(10deg);
+    opacity: 0;
+  }
+  70% {
+    transform: translateX(-100px) rotate(-10deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) rotate(0);
+    opacity: 1;
+  }
+}
+
+/* fox bot left */
+@keyframes spinin-bl {
+  0% {
+    transform: rotate(30deg);
+    transform-origin: 12% 78.3%;
+    opacity: 0;
+  }
+  40% {
+    transform: rotate(30deg);
+    transform-origin: 12% 78.3%;
+    opacity: 0;
+  }
+  70% {
+    transform: rotate(-7deg);
+    transform-origin: 12% 78.3%;
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-7deg);
+    transform-origin: 12% 78.3%;
+    opacity: 1;
+  }
+}
+
+/* spark */
+@keyframes spinin1 {
+  0% {
+    transform: rotate(45deg) ;
+    transform-origin: center;
+    opacity: 0;
+  }
+  40% {
+    transform: rotate(45deg) translateY(20px);
+    transform-origin: center;
+    opacity: 0;
+  }
+  70% {
+    transform: rotate(0deg);
+    transform-origin: center;
+    opacity: 1;
+  }
+}
+@keyframes spinin2 {
+  0% {
+    transform: rotate(45deg) ;
+    transform-origin: center;
+    opacity: 0;
+  }
+  70% {
+    transform: rotate(45deg) translateY(20px);
+    transform-origin: center;
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(15deg);
+    transform-origin: center;
+    opacity: 1;
+  }
+}
+
+/* cloud */
+@keyframes cloudin {
+  0% {
+    transform: translateY(300px) scale(0.5);
+  }
+  50% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes cloudin2 {
+  0% {
+    transform: translateY(100px) scale(0.5);
+  }
+  40% {
+    transform: translateY(100px) scale(0.5);
+  }
+  70% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
 }
