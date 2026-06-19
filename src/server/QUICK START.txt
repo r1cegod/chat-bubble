@@ -42,9 +42,13 @@ The Chat Bubble widget still goes into the StreamElements overlay editor.
 
    Static/Custom -> Custom Widget
 
-5. Open the Custom Widget settings.
+5. close the setting -> open "Position, size and style" 
 
-6. Click:
+6. set Width 1400 Height 3000 -> then press the "Center widget" button
+
+7. Only then reopen the Custom Widget settings.
+
+8. Click:
 
    Open Editor
 
