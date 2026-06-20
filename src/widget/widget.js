@@ -79,7 +79,7 @@ const EMOJI_ASSETS = Object.freeze({
 });
 //tokenizer
 function tokenizeMessage(message) {
-    const pattern = /:([a-z0-9_]+):/gi;
+    const pattern = /:([a-z0-9_-]+):/gi;
     const tokens = [];
     let cursor = 0;
 
@@ -107,13 +107,7 @@ function tokenizeMessage(message) {
                 name,
                 src: Assets.sticker(STICKER_ASSETS[name])
             }];
-        } else {
-            tokens.push({
-                type: "text",
-                value: match[0]
-            });
         }
-
         cursor = end;
     }
 
@@ -397,8 +391,45 @@ window.addEventListener("onWidgetLoad", (obj) => {
   applyFieldData(obj.detail.fieldData);
 });
 
+////message queue
+const messageQueue = [];
+let isRenderingQueue = false;
+const MIN_RENDER_GAP_MS = 220;
+const MAX_RENDER_GAP_MS = 2000;
+
+//read actual delay from field 
+function randomRenderGap() {
+  return Math.floor(
+    MIN_RENDER_GAP_MS +
+    Math.random() * (MAX_RENDER_GAP_MS - MIN_RENDER_GAP_MS)
+  );
+}
+
+function pumpMessageQueue() {
+  const nextMessage = messageQueue.shift();
+
+  if (!nextMessage) {
+    isRenderingQueue = false;
+    return;
+  }
+
+  isRenderingQueue = true;
+  addMessage(nextMessage);
+
+  setTimeout(pumpMessageQueue, randomRenderGap());
+}
+
+function enqueueMessage(messagePackage) {
+  messageQueue.push(messagePackage);
+
+  if (!isRenderingQueue) {
+    pumpMessageQueue();
+  }
+}
+
+
 window.addEventListener("onEventReceived", (obj) => {
   if (obj.detail.listener !== "message") return;
   const messagePackage = normalizeStreamElementsMessage(obj.detail.event.data);
-  addMessage(messagePackage);
+  enqueueMessage(messagePackage);
 });
