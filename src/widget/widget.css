@@ -24,6 +24,19 @@
 .chat-viewport {
   width: var(--chat-canvas-width);
   height: var(--chat-canvas-height);
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black 180px,
+    black 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black 180px,
+    black 100%
+  );
 }
 
 .chat-stack {

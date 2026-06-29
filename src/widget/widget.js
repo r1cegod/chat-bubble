@@ -22,7 +22,42 @@ function applyFieldData(fieldData = {}) {
 }
 
 //////bubble renderer
-////give message access to emoji and gif
+////give message access to yt emoji
+const YOUTUBE_EMOJI_BASE =
+  "https://www.youtube.com/s/gaming/emoji/828cb648";
+
+const EMOJI_DATASOURCE_URL =
+  "https://cdn.jsdelivr.net/npm/emoji-datasource@16.0.0/emoji.json";
+
+const YOUTUBE_EMOJI_ASSETS = {};
+let youtubeEmojiReady = Promise.resolve();
+
+function unifiedToYoutubePath(unified) {
+  return unified
+    .toLowerCase()
+    .split("-")
+    .filter((part) => part !== "fe0f")
+    .join("_");
+}
+
+async function loadYoutubeEmojiAssets() {
+  const response = await fetch(EMOJI_DATASOURCE_URL);
+  const data = await response.json();
+
+  for (const emoji of data) {
+    if (!Array.isArray(emoji.short_names) || !emoji.unified) continue;
+
+    const path = unifiedToYoutubePath(emoji.non_qualified || emoji.unified);
+    const url = `${YOUTUBE_EMOJI_BASE}/emoji_u${path}.png`;
+
+    for (const name of emoji.short_names) {
+      YOUTUBE_EMOJI_ASSETS[name.toLowerCase()] = url;
+    }
+  }
+}
+
+youtubeEmojiReady = loadYoutubeEmojiAssets();
+////give message access to custom emoji and gif
 //image url generator
 const DEFAULT_ASSET_BASE =
   "https://cdn.jsdelivr.net/gh/r1cegod/chat-bubble@main/src/widget/mediasrc";
@@ -107,6 +142,12 @@ function tokenizeMessage(message) {
                 name,
                 src: Assets.sticker(STICKER_ASSETS[name])
             }];
+        } else if (YOUTUBE_EMOJI_ASSETS[name]) {
+            tokens.push({
+                type: "emoji",
+                name,
+                src: YOUTUBE_EMOJI_ASSETS[name]
+            });
         }
         cursor = end;
     }
@@ -348,13 +389,50 @@ function renderMessage(messageData) {
 function addMessage(messagePackage) {
   const chatStack = document.querySelector(".chat-stack");
   const maximumVisible = Number(widgetSettings.maxVisible) || 10;
-  const bubble = renderMessage(messagePackage);
 
+  const oldBubbles = [...chatStack.children];
+  const firstRects = new Map(
+    oldBubbles.map((bubble) => [
+      bubble,
+      bubble.getBoundingClientRect()
+    ])
+  );
+
+  const bubble = renderMessage(messagePackage);
   chatStack.append(bubble);
 
   if (chatStack.children.length > maximumVisible) {
     chatStack.firstElementChild.remove();
   }
+
+  for (const bubble of oldBubbles) {
+    if (!bubble.isConnected) continue;
+
+    const first = firstRects.get(bubble);
+    const last = bubble.getBoundingClientRect();
+
+    const deltaY = first.top - last.top;
+
+    if (deltaY === 0) continue;
+    
+    bubble.animate([
+      { transform: `translateY(${deltaY}px)` },
+      { transform: "translateY(0)" }
+    ], {
+      duration: 300,
+      easing: "ease-out"
+    });
+  }
+
+  const lastestBubble = chatStack.lastElementChild;
+  const lastestBubbleHeight = lastestBubble.getBoundingClientRect().height;
+  lastestBubble.animate([
+    { transform: `translateY(calc(${lastestBubbleHeight}px + 75px))` },
+    { transform: "translateY(0)" }
+  ], {
+    duration: 300,
+    easing: "ease-out"
+  });
 }
 //normalizers
 const RICE_YOUTUBE_CHANNEL_ID = "UC7OCsHMf-2UtZIc59hN8uug";
@@ -386,6 +464,7 @@ function normalizeStreamElementsMessage(data = {}) {
   };
 }
 
+
 //////Listenours
 window.addEventListener("onWidgetLoad", (obj) => {
   applyFieldData(obj.detail.fieldData);
@@ -397,7 +476,7 @@ let isRenderingQueue = false;
 const MIN_RENDER_GAP_MS = 220;
 const MAX_RENDER_GAP_MS = 2000;
 
-//read actual delay from field 
+//add random delay
 function randomRenderGap() {
   return Math.floor(
     MIN_RENDER_GAP_MS +
@@ -405,7 +484,8 @@ function randomRenderGap() {
   );
 }
 
-function pumpMessageQueue() {
+//da pump
+async function pumpMessageQueue() {
   const nextMessage = messageQueue.shift();
 
   if (!nextMessage) {
@@ -414,11 +494,13 @@ function pumpMessageQueue() {
   }
 
   isRenderingQueue = true;
+  await youtubeEmojiReady;
   addMessage(nextMessage);
 
   setTimeout(pumpMessageQueue, randomRenderGap());
 }
 
+//da queue
 function enqueueMessage(messagePackage) {
   messageQueue.push(messagePackage);
 
@@ -428,6 +510,7 @@ function enqueueMessage(messagePackage) {
 }
 
 
+//// message listenour
 window.addEventListener("onEventReceived", (obj) => {
   if (obj.detail.listener !== "message") return;
   const messagePackage = normalizeStreamElementsMessage(obj.detail.event.data);
