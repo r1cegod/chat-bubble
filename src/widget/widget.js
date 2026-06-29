@@ -386,6 +386,7 @@ function renderMessage(messageData) {
 }
 
 //////chatrenderer
+const flipDuration = 220;
 function addMessage(messagePackage) {
   const chatStack = document.querySelector(".chat-stack");
   const maximumVisible = Number(widgetSettings.maxVisible) || 10;
@@ -419,7 +420,7 @@ function addMessage(messagePackage) {
       { transform: `translateY(${deltaY}px)` },
       { transform: "translateY(0)" }
     ], {
-      duration: 300,
+      duration: flipDuration,
       easing: "ease-out"
     });
   }
@@ -430,7 +431,7 @@ function addMessage(messagePackage) {
     { transform: `translateY(calc(${lastestBubbleHeight}px + 75px))` },
     { transform: "translateY(0)" }
   ], {
-    duration: 300,
+    duration: flipDuration,
     easing: "ease-out"
   });
 }
